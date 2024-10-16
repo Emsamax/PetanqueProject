@@ -1,6 +1,9 @@
 package com.example.demo.models;
 
 import jakarta.persistence.*;
+
+import org.antlr.v4.runtime.misc.NotNull;
+
 import lombok.*;
 
 /*
@@ -33,6 +36,7 @@ public class Terrain {
      * Cannot be null.
      */
     @Column(name="nom", nullable = false, length = 100)
+    @NotNull
     private String nom;
 
     /**
@@ -41,6 +45,7 @@ public class Terrain {
      * Should be greater or equal to zero.
      */
     @Column(name="quantite", nullable = false)
+    @NotNull
     private Integer quantite;
 
     /**
@@ -54,5 +59,6 @@ public class Terrain {
      * Cannot be null.
      */
     @Column(name="point_geo", nullable = false, length = 100)
+    @NotNull
     private String pointGeo;
 }
