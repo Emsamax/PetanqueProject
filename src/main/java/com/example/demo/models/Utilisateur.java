@@ -2,7 +2,6 @@ package com.example.demo.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
 
 /*
  * TO DO :
@@ -14,11 +13,9 @@ import org.antlr.v4.runtime.misc.NotNull;
  * This class is mapped to the "utilisateur" table in the database.
  */
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@ToString
 @Table(name = "utilisateur")
 public class Utilisateur {
     /**
@@ -28,7 +25,6 @@ public class Utilisateur {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     private Integer id;
 
     /**
@@ -36,7 +32,6 @@ public class Utilisateur {
      * Cannot be null.
      */
     @Column(name="nom", length=100, nullable=false)
-    @NotNull
     private String nom;
 
     /**
@@ -44,7 +39,6 @@ public class Utilisateur {
      * Cannot be null.
      */
     @Column(name="prenom", length=100, nullable=false)
-    @NotNull
     private String prenom;
 
     /**
@@ -53,7 +47,6 @@ public class Utilisateur {
      * Is unique.
      */
     @Column(name="mail", length=100, nullable=false, unique=true)
-    @NotNull
     private String mail;
 
     /**
@@ -61,7 +54,6 @@ public class Utilisateur {
      * Cannot be null.
      */
     @Column(name="password", length=100, nullable=false)
-    @NotNull
     private String password;
 
     /**
@@ -70,6 +62,5 @@ public class Utilisateur {
      * Is unique.
      */
     @Column(name="username", length=100, nullable=false, unique=true)
-    @NotNull
     private String username;
 }
