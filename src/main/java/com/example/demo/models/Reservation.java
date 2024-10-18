@@ -15,30 +15,15 @@ import org.antlr.v4.runtime.misc.NotNull; // use javax.validation.constraints.No
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "reservation")
 public class Reservation {
     /**
-     * The user associated with this reservation.
-     * Cannot be null.
-     * A foreign key reference to the Utilisateur table.
+     * Embedded composite key for the reservation.
      */
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "utilisateur_id", referencedColumnName = "id", nullable = false)
-    @NotNull
-    private Utilisateur utilisateur;
-
-    /**
-     * The terrain associated with this reservation.
-     * Cannot be null.
-     * A foreign key reference to the Terrain table.
-     */
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "terrain_id", referencedColumnName = "id", nullable = false)
-    @NotNull
-    private Terrain terrain;
+    @EmbeddedId
+    private ReservationId id;
 
     /**
      * The ????.
