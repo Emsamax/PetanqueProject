@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.mapper.UtilisateurMapper;
+import com.example.demo.UtilisateurMapper;
 import com.example.demo.models.Utilisateur;
 import com.example.demo.dto.UtilisateurDTO;
 import com.example.demo.services.UtilisateurService;
@@ -8,11 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @RestController
 public class UtilisateurController {
@@ -31,6 +27,11 @@ public class UtilisateurController {
         }
     }
 
+    @GetMapping("/utilisateur")
+    public void saveUser(@RequestBody UtilisateurDTO utilisateurDTO) {
+        utilisateurService.saveUser(utilisateurDTO);
+        ResponseEntity.ok().build();
+    }
 
     @GetMapping("/utilisateurs")
     public ResponseEntity<Iterable<UtilisateurDTO>> getAllUtilisateurs() {

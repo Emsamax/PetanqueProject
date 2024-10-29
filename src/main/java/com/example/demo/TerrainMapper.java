@@ -1,4 +1,4 @@
-package com.example.demo.mapper;
+package com.example.demo;
 
 import com.example.demo.dto.TerrainDTO;
 import com.example.demo.models.Terrain;

@@ -1,13 +1,12 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.UtilisateurDTO;
-import com.example.demo.mapper.UtilisateurMapper;
-import com.example.demo.models.Utilisateur;
+import com.example.demo.UtilisateurMapper;
 import com.example.demo.repository.UtilisateurRepository;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -16,6 +15,7 @@ import java.util.stream.StreamSupport;
  * Classes services -> conversions DTO
  */
 @Service
+@NoArgsConstructor
 public class UtilisateurService {
     @Autowired
     private UtilisateurRepository utilisateurRepository;
@@ -37,11 +37,12 @@ public class UtilisateurService {
         utilisateurRepository.deleteById(id);
     }
 
-    public void createUser(Utilisateur utilisateur){
-        utilisateurRepository.save(utilisateur);
+    public void saveUser(UtilisateurDTO utilisateur){
+        utilisateurRepository.save(utilisateurMapper.toEntity(utilisateur));
     }
 
     public void updateUser(UtilisateurDTO utilisateur){
+        deleteUserById(utilisateur.getId());
         utilisateurRepository.save(utilisateurMapper.toEntity(utilisateur));
     }
 }

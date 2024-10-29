@@ -6,6 +6,8 @@ import lombok.*;
 /**
  * Key class for the Reservation entity.
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Embeddable
 @Data
 public class ReservationId {
