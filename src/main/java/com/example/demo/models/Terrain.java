@@ -1,7 +1,9 @@
 package com.example.demo.models;
 
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull; // use javax.validation.constraints.NotNull
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 /*
@@ -34,7 +36,7 @@ public class Terrain {
      * Cannot be null.
      */
     @Column(name="nom", nullable = false, length = 100)
-    @NotNull
+    @NotBlank
     private String nom;
 
     /**
@@ -43,6 +45,7 @@ public class Terrain {
      * Should be greater or equal to zero.
      */
     @Column(name="quantite", nullable = false)
+    @Min(value = 0)
     @NotNull
     private Integer quantite;
 
@@ -57,6 +60,6 @@ public class Terrain {
      * Cannot be null.
      */
     @Column(name="point_geo", nullable = false, length = 100)
-    @NotNull
+    @NotBlank
     private String pointGeo;
 }
