@@ -9,7 +9,6 @@ import org.mapstruct.Mapper;
  */
 @Mapper(componentModel = "spring")
 public interface TerrainMapper {
-
     TerrainDTO toDTO(Terrain terrain);
 
     Terrain toEntity(TerrainDTO terrainDTO);

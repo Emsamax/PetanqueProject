@@ -13,7 +13,7 @@ import java.util.Optional;
  * Controller class for handling Terrain-related requests.
  */
 @RestController
-@RequestMapping("/api/terrains")
+@RequestMapping("/terrains")
 public class TerrainController {
 
     private final TerrainService terrainService;
@@ -28,6 +28,7 @@ public class TerrainController {
      */
     @GetMapping
     public List<TerrainDTO> getAllTerrains() {
+        System.out.println(terrainService.getAllTerrains());
         return terrainService.getAllTerrains();
     }
 

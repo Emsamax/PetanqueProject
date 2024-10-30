@@ -1,74 +1,58 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.ReservationDTO;
-import com.example.demo.dto.TerrainDTO;
-import com.example.demo.dto.UtilisateurDTO;
-import com.example.demo.TerrainMapper;
-import com.example.demo.UtilisateurMapper;
-import com.example.demo.models.ReservationId;
+import com.example.demo.models.ReservationId; // Import the ReservationId class
 import com.example.demo.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/reservations")
 public class ReservationController {
 
     @Autowired
     private ReservationService reservationService;
 
-    @Autowired
-    private UtilisateurMapper utilisateurMapper;
-
-    @Autowired
-    private TerrainMapper terrainMapper;
-
-    @PostMapping("/reservation")
-    public ResponseEntity<Void> reserver(
-            @RequestBody UtilisateurDTO utilisateurDTO,
-            @RequestBody TerrainDTO terrainDTO) {
-        ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setId(new ReservationId(utilisateurMapper.toEntity(utilisateurDTO), terrainMapper.toEntity(terrainDTO)));
-
-        if (reservationService.save(reservationDTO)) {
+    // Create a new reservation
+    @PostMapping
+    public ResponseEntity<Void> createReservation(@RequestBody ReservationDTO reservationDTO) {
+        boolean created = reservationService.save(reservationDTO);
+        if (created) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();
         }
     }
 
+    // Get a reservation by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<ReservationDTO> getReservationById(@PathVariable ReservationId id) {
+        Optional<ReservationDTO> reservationDTO = reservationService.readById(id);
+        return reservationDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Get all reservations
     @GetMapping
-    public ResponseEntity<Iterable<ReservationDTO>> getAllReservations() {
-        Iterable<ReservationDTO> reservations = reservationService.readAll();
+    public ResponseEntity<List<ReservationDTO>> getAllReservations() {
+        List<ReservationDTO> reservations = (List<ReservationDTO>) reservationService.readAll();
         return ResponseEntity.ok(reservations);
     }
 
-
-    @GetMapping("/reservation/{id}")
-    public ResponseEntity<Optional<ReservationDTO>> getReservationById(
-            @PathVariable Integer reservationId) {
-
-        Optional<ReservationDTO> reservation = reservationService.readById(reservationId);
-        if (reservation.isPresent()) {
-            return ResponseEntity.ok(reservation);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-
-    @PutMapping("/reservation/{id}")
-    public ResponseEntity<Void> updateReservation(@RequestBody ReservationDTO reservationDTO, @PathVariable Integer id) {
+    // Update a reservation by ID
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateReservation(@PathVariable ReservationId id, @RequestBody ReservationDTO reservationDTO) {
         reservationService.update(id, reservationDTO);
         return ResponseEntity.ok().build();
     }
 
-    // Endpoint pour supprimer une réservation par ID
-    @DeleteMapping("/reservation/{id}")
-    public ResponseEntity<Void> deleteReservationById(@PathVariable Integer id){
-       reservationService.deleteById(id);
-       return ResponseEntity.ok().build();
+    // Delete a reservation by ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReservation(@PathVariable ReservationId id) {
+        reservationService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

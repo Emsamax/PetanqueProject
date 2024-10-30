@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.UtilisateurMapper;
+import com.example.demo.mappers.UtilisateurMapper;
 import com.example.demo.models.Utilisateur;
 import com.example.demo.dto.UtilisateurDTO;
 import com.example.demo.services.UtilisateurService;
@@ -11,52 +11,59 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/utilisateurs")
 public class UtilisateurController {
+
     @Autowired
     private UtilisateurService utilisateurService;
+
     @Autowired
     private UtilisateurMapper utilisateurMapper;
 
-    @GetMapping("/utilisateur/{id}")
+    // Create a new user
+    @PostMapping
+    public ResponseEntity<Void> saveUser(@RequestBody UtilisateurDTO utilisateurDTO) {
+        utilisateurService.saveUser(utilisateurDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    // Get a user by ID
+    @GetMapping("/{id}")
     public ResponseEntity<UtilisateurDTO> getUtilisateur(@PathVariable Integer id) {
         Optional<UtilisateurDTO> optUser = utilisateurService.readUserById(id);
-        if(optUser.isPresent()) {
-            return ResponseEntity.ok(optUser.get());
-        }else{
-            return ResponseEntity.badRequest().build();
-        }
+        return optUser.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/utilisateur")
-    public void saveUser(@RequestBody UtilisateurDTO utilisateurDTO) {
-        utilisateurService.saveUser(utilisateurDTO);
-        ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/utilisateurs")
+    // Get all users
+    @GetMapping
     public ResponseEntity<Iterable<UtilisateurDTO>> getAllUtilisateurs() {
-        System.out.println("ici");
         Iterable<UtilisateurDTO> optUsers = utilisateurService.readAllUser();
-        if(optUsers != null) {
+        if (optUsers != null) {
             return ResponseEntity.ok(optUsers);
-        }else{
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @DeleteMapping("/utilisateur/{id}")
+    // Delete a user by ID
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUtilisateur(@PathVariable Integer id) {
-        utilisateurService.deleteUserById(id);
-        return ResponseEntity.noContent().build();
+        if (utilisateurService.readUserById(id).isPresent()) {
+            utilisateurService.deleteUserById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PutMapping("/utilisateur/{id}")
-    public ResponseEntity<Void> updateUtilisateur(@RequestBody Utilisateur utilisateur, @PathVariable Integer id) {
-        if(utilisateurService.readUserById(id).isPresent()) {
-            utilisateurService.updateUser(utilisateurMapper.toDTO(utilisateur));
+    // Update a user by ID
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO, @PathVariable Integer id) {
+        if (utilisateurService.readUserById(id).isPresent()) {
+            utilisateurService.updateUser(utilisateurDTO);
             return ResponseEntity.ok().build();
-        }else {
-           return ResponseEntity.badRequest().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

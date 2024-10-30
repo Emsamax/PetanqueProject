@@ -1,8 +1,8 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.UtilisateurDTO;
-import com.example.demo.UtilisateurMapper;
-import com.example.demo.repository.UtilisateurRepository;
+import com.example.demo.mappers.UtilisateurMapper;
+import com.example.demo.repositories.UtilisateurRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

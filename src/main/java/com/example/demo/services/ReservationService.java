@@ -1,8 +1,9 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.ReservationDTO;
-import com.example.demo.ReservationMapper;
-import com.example.demo.repository.ReservationRepository;
+import com.example.demo.mappers.ReservationMapper;
+import com.example.demo.models.ReservationId; // Importer ReservationId
+import com.example.demo.repositories.ReservationRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,10 @@ public class ReservationService {
     @Autowired
     private ReservationMapper reservationMapper;
 
-    public Optional<ReservationDTO> readById(Integer id) {
+    // Changez le type de id en ReservationId
+    public Optional<ReservationDTO> readById(ReservationId id) {
         return reservationRepository.findById(id).map(reservationMapper::toDTO);
     }
-
 
     public Iterable<ReservationDTO> readAll() {
         return StreamSupport.stream(reservationRepository.findAll().spliterator(), false)
@@ -30,7 +31,7 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
-    public void deleteById(Integer id) {
+    public void deleteById(ReservationId id) {
         reservationRepository.deleteById(id);
     }
 
@@ -40,16 +41,14 @@ public class ReservationService {
      * no -> create
      * @param reservationDTO
      */
-    public void update(Integer id, ReservationDTO reservationDTO) {
-        if(reservationRepository.findById(id).isPresent()){
+    public void update(ReservationId id, ReservationDTO reservationDTO) {
+        if (reservationRepository.findById(id).isPresent()) {
             deleteById(id);
             reservationRepository.save(reservationMapper.toEntity(reservationDTO));
-        }else {
+        } else {
             reservationRepository.save(reservationMapper.toEntity(reservationDTO));
         }
-
     }
-
 
     public boolean save(ReservationDTO reservationDTO) {
         if (reservationDTO.getId() == null) {
