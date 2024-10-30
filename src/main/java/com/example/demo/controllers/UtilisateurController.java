@@ -1,55 +1,69 @@
 package com.example.demo.controllers;
 
+import com.example.demo.mappers.UtilisateurMapper;
 import com.example.demo.models.Utilisateur;
+import com.example.demo.dto.UtilisateurDTO;
 import com.example.demo.services.UtilisateurService;
-import org.hibernate.annotations.CollectionTypeRegistration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/utilisateurs")
 public class UtilisateurController {
+
     @Autowired
     private UtilisateurService utilisateurService;
 
-    @GetMapping("/utilisateur/{id}")
-    public ResponseEntity<Utilisateur> getUtilisateur(@PathVariable Integer id) {
-        Optional<Utilisateur> optUser = utilisateurService.readUserById(id);
-        if(optUser.isPresent()) {
-            return ResponseEntity.ok(optUser.get());
-        }else{
-            return ResponseEntity.badRequest().build();
-        }
+    @Autowired
+    private UtilisateurMapper utilisateurMapper;
+
+    // Create a new user
+    @PostMapping
+    public ResponseEntity<Void> saveUser(@RequestBody UtilisateurDTO utilisateurDTO) {
+        utilisateurService.saveUser(utilisateurDTO);
+        return ResponseEntity.ok().build();
     }
 
+    // Get a user by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<UtilisateurDTO> getUtilisateur(@PathVariable Integer id) {
+        Optional<UtilisateurDTO> optUser = utilisateurService.readUserById(id);
+        return optUser.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
-    @GetMapping("/utilisateurs")
-    public ResponseEntity<Iterable<Utilisateur>> getAllUtilisateurs() {
-        System.out.println("ici");
-        Iterable<Utilisateur> optUsers = utilisateurService.readAllUser();
-        if(optUsers != null) {
+    // Get all users
+    @GetMapping
+    public ResponseEntity<Iterable<UtilisateurDTO>> getAllUtilisateurs() {
+        Iterable<UtilisateurDTO> optUsers = utilisateurService.readAllUser();
+        if (optUsers != null) {
             return ResponseEntity.ok(optUsers);
-        }else{
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @DeleteMapping("/utilisateur/{id}")
+    // Delete a user by ID
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUtilisateur(@PathVariable Integer id) {
-        utilisateurService.deleteUserById(id);
-        return ResponseEntity.noContent().build();
+        if (utilisateurService.readUserById(id).isPresent()) {
+            utilisateurService.deleteUserById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PutMapping("/utilisateur/{id}")
-    public ResponseEntity<Void> updateUtilisateur(@RequestBody Utilisateur utilisateur, @PathVariable Integer id) {
-        if(utilisateurService.readUserById(id).isPresent()) {
-            utilisateurService.updateUser(utilisateur);
+    // Update a user by ID
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO, @PathVariable Integer id) {
+        if (utilisateurService.readUserById(id).isPresent()) {
+            utilisateurService.updateUser(utilisateurDTO);
             return ResponseEntity.ok().build();
-        }else {
-           return ResponseEntity.badRequest().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

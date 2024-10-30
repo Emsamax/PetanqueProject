@@ -2,7 +2,7 @@ package com.example.demo.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull; // use javax.validation.constraints.NotNull
+import jakarta.validation.constraints.NotNull;
 
 /*
  * TO DO :

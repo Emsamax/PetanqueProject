@@ -2,7 +2,8 @@ package com.example.demo.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull; // use javax.validation.constraints.NotNull
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 /*
  * TO DO :
@@ -33,7 +34,7 @@ public class Utilisateur {
      * Cannot be null.
      */
     @Column(name="nom", length=100, nullable=false)
-    @NotNull
+    @NotBlank
     private String nom;
 
     /**
@@ -41,7 +42,7 @@ public class Utilisateur {
      * Cannot be null.
      */
     @Column(name="prenom", length=100, nullable=false)
-    @NotNull
+    @NotBlank
     private String prenom;
 
     /**
@@ -50,7 +51,7 @@ public class Utilisateur {
      * Is unique.
      */
     @Column(name="mail", length=100, nullable=false, unique=true)
-    @NotNull
+    @NotBlank
     private String mail;
 
     /**
@@ -58,7 +59,7 @@ public class Utilisateur {
      * Cannot be null.
      */
     @Column(name="password", length=100, nullable=false)
-    @NotNull
+    @NotBlank
     private String password;
 
     /**
