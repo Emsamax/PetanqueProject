@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"com.example.demo.controllers", "com.example.demo.services", "com.example.demo.mappers"})
 public class PetanqueApplication {
 
 	public static void main(String[] args) {
