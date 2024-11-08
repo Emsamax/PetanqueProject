@@ -27,8 +27,7 @@ public class ReservationService {
 
     public Iterable<ReservationDTO> readAll() {
         return StreamSupport.stream(reservationRepository.findAll().spliterator(), false)
-                .map(reservationMapper::toDTO)
-                .collect(Collectors.toList());
+                .map(reservationMapper::toDTO).toList();
     }
 
     public void deleteById(ReservationId id) {
