@@ -5,6 +5,7 @@ import com.example.demo.mappers.UtilisateurMapper;
 import com.example.demo.repositories.UtilisateurRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -23,8 +24,9 @@ public class UtilisateurService {
     @Autowired
     private UtilisateurMapper utilisateurMapper;
 
-    public Optional<UtilisateurDTO> readUserById(Integer id){
-        return utilisateurRepository.findById(id).map(utilisateurMapper::toDTO);
+    public Optional<UtilisateurDTO> readUserById(Integer id) throws Exception {
+        return Optional.ofNullable(utilisateurRepository.findById(id).map(utilisateurMapper::toDTO).
+                orElseThrow(ChangeSetPersister.NotFoundException::new));
     }
 
     public Iterable<UtilisateurDTO> readAllUser(){
