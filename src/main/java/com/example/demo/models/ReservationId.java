@@ -11,17 +11,10 @@ import lombok.*;
 @Embeddable
 @Data
 public class ReservationId {
-    /**
-     * A foreign key reference to the Utilisateur table.
-     */
-    @ManyToOne
-    @JoinColumn(name="utilisateur_id", referencedColumnName="id", nullable=false)
-    private Utilisateur utilisateur;
 
-    /**
-     * A foreign key reference to the Terrain table.
-     */
-    @ManyToOne
-    @JoinColumn(name="terrain_id", referencedColumnName="id", nullable=false)
-    private Terrain terrain;
+    @Column(name = "utilisateur_id")
+    private Integer utilisateurId;
+
+    @Column(name = "terrain_id")
+    private Integer terrainId;
 }

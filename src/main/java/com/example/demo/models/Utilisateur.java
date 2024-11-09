@@ -5,6 +5,8 @@ import lombok.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.List;
+
 /*
  * TO DO :
  * - Add security for password and mail
@@ -70,4 +72,7 @@ public class Utilisateur {
     @Column(name="username", length=100, nullable=false, unique=true)
     @NotNull
     private String username;
+
+    @OneToMany(mappedBy = "utilisateur")
+    private List<Reservation> reservations;
 }

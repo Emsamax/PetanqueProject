@@ -32,4 +32,14 @@ public class Reservation {
     @Column(nullable = false)
     @NotNull
     private Integer reservation;
+
+    @ManyToOne
+    @MapsId("utilisateurId")
+    @JoinColumn(name = "utilisateur_id")
+    private Utilisateur utilisateur;
+
+    @ManyToOne
+    @MapsId("terrainId")
+    @JoinColumn(name = "terrain_id")
+    private Terrain terrain;
 }

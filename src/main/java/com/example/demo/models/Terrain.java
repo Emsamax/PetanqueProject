@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.List;
+
 /*
  * TO DO :
  * - Add security quantité ( >= 0 )
@@ -62,4 +64,7 @@ public class Terrain {
     @Column(name="point_geo", nullable = false, length = 100)
     @NotBlank
     private String pointGeo;
+
+    @OneToMany(mappedBy = "terrain")
+    private List<Reservation> reservations;
 }

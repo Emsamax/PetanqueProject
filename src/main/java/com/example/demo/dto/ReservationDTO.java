@@ -14,10 +14,5 @@ public class ReservationDTO {
      */
     private ReservationIdDTO id;
 
-    /**
-     * The reservation value.
-     * Cannot be null.
-     */
-    @NotNull(message = "Reservation cannot be null")
     private Integer reservation;
 }
