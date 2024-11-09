@@ -1,11 +1,13 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.ReservationDTO;
+import com.example.demo.dto.TerrainDTO;
 import com.example.demo.mappers.ReservationMapper;
 import com.example.demo.models.ReservationId; // Importer ReservationId
 import com.example.demo.repositories.ReservationRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,17 +23,19 @@ public class ReservationService {
     private ReservationMapper reservationMapper;
 
     // Changez le type de id en ReservationId
-    public Optional<ReservationDTO> readById(ReservationId id) {
-        return reservationRepository.findById(id).map(reservationMapper::toDTO);
+    public Optional<ReservationDTO> getReservationById(ReservationId id) throws ChangeSetPersister.NotFoundException {
+        return Optional.ofNullable(reservationRepository.findById(id)
+                .map(reservationMapper::toDTO)
+                .orElseThrow(ChangeSetPersister.NotFoundException::new));
     }
 
-    public Iterable<ReservationDTO> readAll() {
+    public Iterable<ReservationDTO> getAllReservation() {
         return StreamSupport.stream(reservationRepository.findAll().spliterator(), false)
                 .map(reservationMapper::toDTO).toList();
     }
 
-    public void deleteById(ReservationId id) {
-        reservationRepository.deleteById(id);
+    public void saveReservation(ReservationDTO reservationDTO) {
+        reservationRepository.save(reservationMapper.toEntity(reservationDTO));
     }
 
     /**
@@ -40,20 +44,18 @@ public class ReservationService {
      * no -> create
      * @param reservationDTO
      */
-    public void update(ReservationId id, ReservationDTO reservationDTO) {
-        if (reservationRepository.findById(id).isPresent()) {
-            deleteById(id);
-            reservationRepository.save(reservationMapper.toEntity(reservationDTO));
-        } else {
-            reservationRepository.save(reservationMapper.toEntity(reservationDTO));
+    public void updateReservation(ReservationId id, ReservationDTO reservationDTO) throws ChangeSetPersister.NotFoundException {
+        if (reservationRepository.findById(id).isEmpty()) {
+            throw new ChangeSetPersister.NotFoundException();
         }
+
+        reservationRepository.save(reservationMapper.toEntity(reservationDTO));
     }
 
-    public boolean save(ReservationDTO reservationDTO) {
-        if (reservationDTO.getId() == null) {
-            reservationRepository.save(reservationMapper.toEntity(reservationDTO));
-            return true;
+    public void deleteReservationById(ReservationId id) throws ChangeSetPersister.NotFoundException {
+        if (reservationRepository.findById(id).isEmpty()) {
+            throw new ChangeSetPersister.NotFoundException();
         }
-        return false;
+        reservationRepository.deleteById(id);
     }
 }

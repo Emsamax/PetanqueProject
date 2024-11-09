@@ -14,15 +14,26 @@ public class RESTResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(value = {IllegalArgumentException.class, ChangeSetPersister.NotFoundException.class})
     protected ResponseEntity<Object> handleConflict(Exception ex, WebRequest request) {
-        String bodyOfResponse = "";
-            if(ex instanceof IllegalArgumentException){
-                bodyOfResponse = ex.getMessage() + "les paramètres ne correspondent pas";
-                return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-            } else if (ex instanceof ChangeSetPersister.NotFoundException) {
-                bodyOfResponse = "Il n'existe pas d'objet avec cet id";
-                return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-            }
-        System.out.println("test");
-        return null;
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        if (ex instanceof IllegalArgumentException)
+        {
+            errorResponse.setError("Bad Request");
+            errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+            errorResponse.setMessage(String.format("Erreur de paramètres : %s. Les paramètres fournis ne correspondent pas aux attentes pour cette requête.", ex.getMessage()));
+            return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        }
+        else if (ex instanceof ChangeSetPersister.NotFoundException)
+        {
+            errorResponse.setError("Not Found");
+            errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+            errorResponse.setMessage("L'objet demandé avec l'ID fourni n'a pas été trouvé dans la base de données. Veuillez vérifier l'ID et réessayer.");
+            return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        }
+
+        errorResponse.setError("Internal Server Error");
+        errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorResponse.setMessage("Une erreur inattendue s'est produite. Veuillez réessayer plus tard.");
+        return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 }

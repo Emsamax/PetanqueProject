@@ -3,14 +3,16 @@ package com.example.demo.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 /**
  * Key class for the Reservation entity.
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@Embeddable
 @Data
-public class ReservationId {
+@Embeddable
+public class ReservationId implements Serializable {
     /**
      * A foreign key reference to the Utilisateur table.
      */
