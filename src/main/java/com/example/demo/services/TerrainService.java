@@ -31,8 +31,7 @@ public class TerrainService {
      */
     public List<TerrainDTO> getAllTerrains() {
         return terrainRepository.findAll().stream()
-                .map(terrainMapper::toDTO)
-                .collect(Collectors.toList());
+                .map(terrainMapper::toDTO).toList();
     }
 
     /**

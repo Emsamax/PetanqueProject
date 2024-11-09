@@ -1,33 +1,34 @@
-# API Endpoints
+# API Utilisateur Endpoints
+
 | GET         | /utilisateur/{id}                                            |
 | ----------- | ------------------------------------------------------------ |
-| Used to     | Récupérer les données d'un utilisateur par son identifiant.  |
+| Used to     | Récupère les données d'un utilisateur par son identifiant.  |
 | Json Output | `None`                               |
 | Error Output| `404 Not Found`                                              |
-| Status      | Not Implemented ❌                                           |
+| Status      | Implemented ✔️                                           |
 | Unit Test   | TODO ⏳                                                     |
 
-| GET         | /utilisateurs                                                |
+| GET         | /utilisateur                                                |
 | ----------- | ------------------------------------------------------------ |
-| Used to     | Récupérer la liste de tous les utilisateurs.                 |
+| Used to     | Récupère la liste de tous les utilisateurs.                 |
 | Json Output | `None`                                     |
 | Error Output| `404 Not Found`                                             |
-| Status      | Not Implemented ❌                                           |
+| Status      | Implemented ✔️                                           |
 | Unit Test   | TODO ⏳                                                     |
 
 | DELETE      | /utilisateur/{id}                                           |
 | ----------- | ----------------------------------------------------------- |
-| Used to     | Supprimer un utilisateur par son identifiant.               |
+| Used to     | Supprime un utilisateur par son identifiant.               |
 | Json Output | `None`                                                      |
 | Error Output| `404 Not Found`                                            |
-| Status      | Not Implemented ❌                                          |
+| Status      | Implemented ✔️                                          |
 | Unit Test   | TODO ⏳                                                    |
 
 | PUT         | /utilisateur/{id}                                           |
 | ----------- | ----------------------------------------------------------- |
-| Used to     | Mettre à jour les données d'un utilisateur existant.        |
+| Used to     | Met à jour les données d'un utilisateur existant.        |
 | Json Output | `None`                                                      |
-| Error Output| `404 Not Found` ou `400 Bad Request`                        |
-| Status      | Not Implemented ❌                                          |
+| Error Output| `404 Not Found` or `400 Bad Request`                        |
+| Status      | Implemented ✔️                                          |
 | Unit Test   | TODO ⏳                                                    |
                                             |

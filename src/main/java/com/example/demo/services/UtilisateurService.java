@@ -31,8 +31,7 @@ public class UtilisateurService {
 
     public Iterable<UtilisateurDTO> readAllUser(){
       return StreamSupport.stream(utilisateurRepository.findAll().spliterator(), false)
-              .map(utilisateurMapper::toDTO)
-              .collect(Collectors.toList());
+              .map(utilisateurMapper::toDTO).toList();
     }
 
     public void deleteUserById(Integer id){
