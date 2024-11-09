@@ -4,6 +4,7 @@ import com.example.demo.dto.TerrainDTO;
 import com.example.demo.dto.UtilisateurDTO;
 import com.example.demo.services.TerrainService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,10 +19,12 @@ import java.util.Optional;
 public class TerrainController {
 
     private final TerrainService terrainService;
+    private final ServerProperties serverProperties;
 
     @Autowired
-    public TerrainController(TerrainService terrainService) {
+    public TerrainController(TerrainService terrainService, ServerProperties serverProperties) {
         this.terrainService = terrainService;
+        this.serverProperties = serverProperties;
     }
 
     /**
@@ -63,7 +66,8 @@ public class TerrainController {
      * Delete a terrain by ID.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTerrain(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteTerrain(@PathVariable Integer id) throws Exception {
+        terrainService.deleteTerrainById(id);
         return ResponseEntity.notFound().build();
     }
 }

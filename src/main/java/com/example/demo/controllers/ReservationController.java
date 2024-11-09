@@ -48,7 +48,8 @@ public class ReservationController {
 
     // Delete a reservation by ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReservation(@PathVariable ReservationId id) {
+    public ResponseEntity<Void> deleteReservation(@PathVariable ReservationId id) throws Exception {
+        reservationService.deleteReservationById(id);
         return ResponseEntity.notFound().build();
     }
 }

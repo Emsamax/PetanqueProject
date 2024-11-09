@@ -56,6 +56,7 @@ public class UtilisateurController {
     // Delete a user by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUtilisateur(@PathVariable Integer id) throws Exception {
+        utilisateurService.deleteUtilisateurById(id);
         return ResponseEntity.notFound().build();
     }
 }
