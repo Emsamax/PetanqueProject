@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.TerrainDTO;
+import com.example.demo.dto.UtilisateurDTO;
 import com.example.demo.services.TerrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,39 +25,38 @@ public class TerrainController {
     }
 
     /**
-     * Retrieve all terrains.
-     */
-    @GetMapping
-    public List<TerrainDTO> getAllTerrains() {
-        System.out.println(terrainService.getAllTerrains());
-        return terrainService.getAllTerrains();
-    }
-
-    /**
      * Retrieve a terrain by ID.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<TerrainDTO> getTerrainById(@PathVariable Integer id) {
+    public ResponseEntity<TerrainDTO> getTerrainById(@PathVariable Integer id) throws Exception {
         Optional<TerrainDTO> terrainDTO = terrainService.getTerrainById(id);
-        return terrainDTO.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        TerrainDTO terrain = terrainDTO.get();
+        return ResponseEntity.ok(terrain);
+    }
+
+    /**
+     * Retrieve all terrains.
+     */
+    @GetMapping
+    public Iterable<TerrainDTO> getAllTerrain() {
+        return terrainService.getAllTerrains();
     }
 
     /**
      * Create a new terrain.
      */
     @PostMapping
-    public TerrainDTO createTerrain(@RequestBody TerrainDTO terrainDTO) {
-        return terrainService.saveTerrain(terrainDTO);
+    public ResponseEntity<Void> saveTerrain(@RequestBody TerrainDTO terrainDTO) {
+        terrainService.saveTerrain(terrainDTO);
+        return ResponseEntity.ok().build();
     }
 
     /**
      * Update an existing terrain.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<TerrainDTO> updateTerrain(@PathVariable Integer id, @RequestBody TerrainDTO terrainDTO) {
-        terrainDTO.setId(id);
-        return ResponseEntity.ok(terrainService.saveTerrain(terrainDTO));
+    public ResponseEntity<Void> updateTerrain(@PathVariable Integer id, @RequestBody TerrainDTO terrainDTO) {
+        return ResponseEntity.notFound().build();
     }
 
     /**
@@ -64,7 +64,6 @@ public class TerrainController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTerrain(@PathVariable Integer id) {
-        terrainService.deleteTerrain(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 }
