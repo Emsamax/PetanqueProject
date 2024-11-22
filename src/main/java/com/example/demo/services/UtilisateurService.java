@@ -2,6 +2,8 @@ package com.example.demo.services;
 
 import com.example.demo.dto.UtilisateurDTO;
 import com.example.demo.mappers.UtilisateurMapper;
+import com.example.demo.mappers.UtilisateurMapperImpl;
+import com.example.demo.models.Utilisateur;
 import com.example.demo.repositories.UtilisateurRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class UtilisateurService {
 
     @Autowired
     private UtilisateurMapper utilisateurMapper;
+    @Autowired
+    private UtilisateurMapperImpl utilisateurMapperImpl;
 
     public Optional<UtilisateurDTO> getUtilisateurById(Integer id) throws ChangeSetPersister.NotFoundException {
         // Si l'utilisateur n'est pas trouvé, une exception NotFound est lancée
@@ -42,12 +46,19 @@ public class UtilisateurService {
         utilisateurRepository.save(utilisateurMapper.toEntity(utilisateur));
     }
 
-    public void updateUtilisateur(UtilisateurDTO utilisateurDTO) throws ChangeSetPersister.NotFoundException {
+    public void updateUtilisateur(Integer id, UtilisateurDTO utilisateurDTO) throws ChangeSetPersister.NotFoundException, IllegalArgumentException {
         // Vérifie si l'utilisateur existe avant de procéder à la mise à jour
-        if (!utilisateurRepository.existsById(utilisateurDTO.getId())) {
+        if (!utilisateurRepository.existsById(id)) {
             throw new ChangeSetPersister.NotFoundException();
         }
+
+        // Vérifie si l'email n'exsite pas déjà
+        if (utilisateurRepository.findByMail(utilisateurDTO.getMail()) != null) {
+            throw new IllegalArgumentException();
+        }
+
         // Supprime l'utilisateur existant puis sauvegarde le nouvel utilisateur
+        utilisateurDTO.setId(id);
         utilisateurRepository.save(utilisateurMapper.toEntity(utilisateurDTO));
     }
 

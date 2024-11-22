@@ -50,7 +50,7 @@ public class UtilisateurController {
     // Update a user by ID
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO, @PathVariable Integer id) throws Exception {
-        utilisateurService.updateUtilisateur(utilisateurDTO);
+        utilisateurService.updateUtilisateur(id, utilisateurDTO);
         return ResponseEntity.ok().build();
     }
 

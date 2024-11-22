@@ -51,6 +51,9 @@ public class ReservationService {
         if (!reservationRepository.existsById(reservationIdMapper.toEntity(reservationDTO.getId()))) {
             throw new ChangeSetPersister.NotFoundException();
         }
+
+
+
         // Sauvegarde le terrain mis à jour
         reservationRepository.save(reservationMapper.toEntity(reservationDTO));
     }

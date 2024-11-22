@@ -54,12 +54,13 @@ public class TerrainService {
     /**
      * Update an existing terrain.
      */
-    public void updateTerrain(TerrainDTO terrainDTO) throws ChangeSetPersister.NotFoundException {
+    public void updateTerrain(Integer id, TerrainDTO terrainDTO) throws ChangeSetPersister.NotFoundException {
         // Vérifie si le terrain existe avant de procéder à la mise à jour
-        if (!terrainRepository.existsById(terrainDTO.getId())) {
+        if (!terrainRepository.existsById(id)) {
             throw new ChangeSetPersister.NotFoundException();
         }
         // Sauvegarde le terrain mis à jour
+        terrainDTO.setId(id);
         terrainRepository.save(terrainMapper.toEntity(terrainDTO));
     }
 

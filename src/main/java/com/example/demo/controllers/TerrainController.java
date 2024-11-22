@@ -59,7 +59,7 @@ public class TerrainController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateTerrain(@PathVariable Integer id, @RequestBody TerrainDTO terrainDTO) throws Exception {
-        terrainService.updateTerrain(terrainDTO);
+        terrainService.updateTerrain(id, terrainDTO);
         return ResponseEntity.ok().build();
     }
 
