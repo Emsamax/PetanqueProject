@@ -15,7 +15,7 @@ import java.util.Optional;
  * Controller class for handling Terrain-related requests.
  */
 @RestController
-@RequestMapping("/terrains")
+@RequestMapping("/terrain")
 public class TerrainController {
 
     private final TerrainService terrainService;
@@ -58,8 +58,9 @@ public class TerrainController {
      * Update an existing terrain.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateTerrain(@PathVariable Integer id, @RequestBody TerrainDTO terrainDTO) {
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> updateTerrain(@PathVariable Integer id, @RequestBody TerrainDTO terrainDTO) throws Exception {
+        terrainService.updateTerrain(terrainDTO);
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -68,6 +69,6 @@ public class TerrainController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTerrain(@PathVariable Integer id) throws Exception {
         terrainService.deleteTerrainById(id);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().build();
     }
 }

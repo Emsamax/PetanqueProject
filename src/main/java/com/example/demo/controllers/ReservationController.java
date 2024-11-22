@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/reservations")
+@RequestMapping("/reservation")
 public class ReservationController {
 
     @Autowired
@@ -42,14 +42,15 @@ public class ReservationController {
 
     // Update a reservation by ID
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateReservation(@PathVariable ReservationId id, @RequestBody ReservationDTO reservationDTO) {
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> updateReservation(@PathVariable ReservationId id, @RequestBody ReservationDTO reservationDTO) throws Exception {
+        reservationService.updateReservation(reservationDTO);
+        return ResponseEntity.ok().build();
     }
 
     // Delete a reservation by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReservation(@PathVariable ReservationId id) throws Exception {
         reservationService.deleteReservationById(id);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().build();
     }
 }

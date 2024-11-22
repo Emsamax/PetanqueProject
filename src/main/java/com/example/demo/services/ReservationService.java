@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.dto.ReservationDTO;
 import com.example.demo.dto.TerrainDTO;
+import com.example.demo.mappers.ReservationIdMapper;
 import com.example.demo.mappers.ReservationMapper;
 import com.example.demo.models.ReservationId; // Importer ReservationId
 import com.example.demo.repositories.ReservationRepository;
@@ -21,6 +22,7 @@ public class ReservationService {
     private ReservationRepository reservationRepository;
     @Autowired
     private ReservationMapper reservationMapper;
+    private ReservationIdMapper reservationIdMapper;
 
     // Changez le type de id en ReservationId
     public Optional<ReservationDTO> getReservationById(ReservationId id) throws ChangeSetPersister.NotFoundException {
@@ -44,16 +46,18 @@ public class ReservationService {
      * no -> create
      * @param reservationDTO
      */
-    public void updateReservation(ReservationId id, ReservationDTO reservationDTO) throws ChangeSetPersister.NotFoundException {
-        if (reservationRepository.findById(id).isEmpty()) {
+    public void updateReservation(ReservationDTO reservationDTO) throws ChangeSetPersister.NotFoundException {
+        // Vérifie si le terrain existe avant de procéder à la mise à jour
+        if (!reservationRepository.existsById(reservationIdMapper.toEntity(reservationDTO.getId()))) {
             throw new ChangeSetPersister.NotFoundException();
         }
-
+        // Sauvegarde le terrain mis à jour
         reservationRepository.save(reservationMapper.toEntity(reservationDTO));
     }
 
     public void deleteReservationById(ReservationId id) throws ChangeSetPersister.NotFoundException {
-        if (reservationRepository.findById(id).isEmpty()) {
+        // Vérifie si le terrain existe avant de le supprimer
+        if (!reservationRepository.existsById(id)) {
             throw new ChangeSetPersister.NotFoundException();
         }
         reservationRepository.deleteById(id);

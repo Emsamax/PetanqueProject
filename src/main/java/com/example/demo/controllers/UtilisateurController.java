@@ -50,13 +50,14 @@ public class UtilisateurController {
     // Update a user by ID
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO, @PathVariable Integer id) throws Exception {
-        return ResponseEntity.notFound().build();
+        utilisateurService.updateUtilisateur(utilisateurDTO);
+        return ResponseEntity.ok().build();
     }
 
     // Delete a user by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUtilisateur(@PathVariable Integer id) throws Exception {
         utilisateurService.deleteUtilisateurById(id);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().build();
     }
 }

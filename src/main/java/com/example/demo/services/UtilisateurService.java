@@ -42,13 +42,13 @@ public class UtilisateurService {
         utilisateurRepository.save(utilisateurMapper.toEntity(utilisateur));
     }
 
-    public void updateUtilisateur(UtilisateurDTO utilisateur) throws ChangeSetPersister.NotFoundException {
+    public void updateUtilisateur(UtilisateurDTO utilisateurDTO) throws ChangeSetPersister.NotFoundException {
         // Vérifie si l'utilisateur existe avant de procéder à la mise à jour
-        if (!utilisateurRepository.existsById(utilisateur.getId())) {
+        if (!utilisateurRepository.existsById(utilisateurDTO.getId())) {
             throw new ChangeSetPersister.NotFoundException();
         }
         // Supprime l'utilisateur existant puis sauvegarde le nouvel utilisateur
-        utilisateurRepository.save(utilisateurMapper.toEntity(utilisateur));
+        utilisateurRepository.save(utilisateurMapper.toEntity(utilisateurDTO));
     }
 
     public void deleteUtilisateurById(Integer id) throws ChangeSetPersister.NotFoundException {
