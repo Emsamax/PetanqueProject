@@ -38,12 +38,11 @@ public class Reservation {
     private ReservationId id;
 
     /**
-     * The unique reservation identifier (or code).
-     * This field cannot be null and is typically used to uniquely identify a reservation.
+     * The number of reserved terrain.
      */
     @Column(nullable = false)
     @NotNull(message = "The reservation code cannot be null.")
-    @Schema(description = "The unique identifier for the reservation (cannot be null).")
+    @Schema(description = "The number of reserved terrain.")
     private Integer reservation;
 
     /**
