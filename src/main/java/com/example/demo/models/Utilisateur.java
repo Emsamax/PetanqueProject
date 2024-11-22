@@ -1,11 +1,16 @@
 package com.example.demo.models;
 
 import jakarta.persistence.*;
-import lombok.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -28,7 +33,7 @@ public class Utilisateur {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "The unique identifier of the user.", example = "1")
+    @Schema(description = "The unique identifier of the user.")
     private Integer id;
 
     /**
@@ -38,7 +43,7 @@ public class Utilisateur {
     @Column(name = "nom", length = 100, nullable = false)
     @NotBlank(message = "The last name cannot be empty.")
     @Size(min = 1, max = 100, message = "The last name must be between 1 and 100 characters.")
-    @Schema(description = "The user's last name.", example = "Dupont")
+    @Schema(description = "The user's last name.")
     private String nom;
 
     /**
@@ -48,7 +53,7 @@ public class Utilisateur {
     @Column(name = "prenom", length = 100, nullable = false)
     @NotBlank(message = "The first name cannot be empty.")
     @Size(min = 1, max = 100, message = "The first name must be between 1 and 100 characters.")
-    @Schema(description = "The user's first name.", example = "Jean")
+    @Schema(description = "The user's first name.")
     private String prenom;
 
     /**
@@ -59,7 +64,7 @@ public class Utilisateur {
     @NotBlank(message = "The email cannot be empty.")
     @Email(message = "The email must be valid.")
     @Size(max = 100, message = "The email cannot exceed 100 characters.")
-    @Schema(description = "The user's email.", example = "jean.dupont@example.com")
+    @Schema(description = "The user's email.")
     private String mail;
 
     /**
@@ -70,7 +75,7 @@ public class Utilisateur {
     @Column(name = "password", length = 100, nullable = false)
     @NotBlank(message = "The password cannot be empty.")
     @Size(min = 8, max = 100, message = "The password must be between 8 and 100 characters.")
-    @Schema(description = "The user's password (should be secured).", example = "Password123")
+    @Schema(description = "The user's password.")
     private String password;
 
     /**
@@ -80,7 +85,7 @@ public class Utilisateur {
     @Column(name = "username", length = 100, nullable = false, unique = true)
     @NotNull(message = "The username cannot be null.")
     @Size(min = 1, max = 100, message = "The username must be between 1 and 100 characters.")
-    @Schema(description = "The unique username of the user.", example = "jdupont")
+    @Schema(description = "The username of the user.")
     private String username;
 
     /**
