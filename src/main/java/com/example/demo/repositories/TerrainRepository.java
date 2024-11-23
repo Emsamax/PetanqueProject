@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface TerrainRepository extends JpaRepository<Terrain, Integer> {
     /**
-     * Decrements the quantite field of a Terrain by the specified value n.
+     * Decrements the quantite field of a Terrain by the specified value.
      *
      * @param id The ID of the terrain to update
      * @param decrementValue The value to decrement from the quantite
@@ -23,4 +23,15 @@ public interface TerrainRepository extends JpaRepository<Terrain, Integer> {
     @Transactional
     @Query("UPDATE Terrain t SET t.quantite = t.quantite - :decrementValue WHERE t.id = :id")
     void decrementQuantiteById(Integer id, Integer decrementValue);
+
+    /**
+     * Increments the quantite field of a Terrain by the specified value.
+     *
+     * @param id The ID of the terrain to update
+     * @param incrementValue The value to increment to the quantite
+     */
+    @Modifying
+    @Transactional
+    @Query("UPDATE Terrain t SET t.quantite = t.quantite + :incrementValue WHERE t.id = :id")
+    void incrementQuantiteById(Integer id, Integer incrementValue);
 }

@@ -129,4 +129,28 @@ public class TerrainService {
         // If the decrement is valid, update the terrain's quantity
         terrainRepository.decrementQuantiteById(id, decrementValue);
     }
+
+    /**
+     * Increments the quantity of a terrain by a specified value.
+     * This method updates the quantity of terrain available by increasing it based on the provided
+     * increment value.
+     *
+     * @param id the ID of the terrain whose quantity is to be incremented
+     * @param incrementValue the value by which the quantity should be increased
+     * @throws NotFoundException if the terrain with the given ID is not found
+     */
+    public void incrementQuantite(Integer id, Integer incrementValue) throws NotFoundException {
+        // Retrieve the terrain entity by its ID, throwing a NotFoundException if not found
+        Terrain terrain = terrainRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Terrain with ID " + id + " not found"));
+
+        // Ensure the increment value is positive
+        if (incrementValue < 0) {
+            throw new IllegalArgumentException("You cannot increment terrain quantity with negative value. Use decremental method instead");
+        }
+
+        // If the increment is valid, update the terrain's quantity
+        terrainRepository.incrementQuantiteById(id, incrementValue);
+    }
+
 }
