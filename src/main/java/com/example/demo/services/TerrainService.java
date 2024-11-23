@@ -117,7 +117,7 @@ public class TerrainService {
         // Ensure that the requested decrement does not exceed the available quantity
         if (terrainQuantity < decrementValue) {
             // If not enough quantity is available, throw an IllegalArgumentException
-            throw new IllegalArgumentException("You can't reserve " + decrementValue +  " number of terrains, as only " + terrainQuantity  + " plots are available");
+            throw new IllegalArgumentException("You can't reserve " + decrementValue +  " number of terrain, as only " + terrainQuantity  + " terrains are available");
         }
 
         // If the decrement is valid, update the terrain's quantity

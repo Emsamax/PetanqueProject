@@ -25,11 +25,17 @@ public class ReservationService {
 
     @Autowired
     private ReservationRepository reservationRepository;
+
+    @Autowired
     private TerrainRepository terrainRepository;
+
+    @Autowired
     private UtilisateurRepository utilisateurRepository;
 
     @Autowired
     private ReservationMapper reservationMapper;
+
+    @Autowired
     private ReservationIdMapper reservationIdMapper;
 
     @Autowired
@@ -81,6 +87,8 @@ public class ReservationService {
 
         // Decrement terrain quantity based on the reservation
         terrainService.decrementQuantite(reservation.getId().getTerrainId(), reservation.getReservation());
+
+        System.out.println(reservationMapper.toEntity(reservation));
 
         // Save the reservation
         reservationRepository.save(reservationMapper.toEntity(reservation));

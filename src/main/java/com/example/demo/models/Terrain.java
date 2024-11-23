@@ -5,14 +5,11 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.List;
 
 /**
  * Represents the petanque ground in the system.
@@ -20,7 +17,7 @@ import java.util.List;
  */
 @Entity
 @Data
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "terrain")
 public class Terrain {
@@ -70,13 +67,4 @@ public class Terrain {
     @NotBlank(message = "The geographic point cannot be empty.")
     @Schema(description = "The geographic point (location) of the petanque ground (maximum 100 characters).")
     private String pointGeo;
-
-    /**
-     * A list of reservations associated with this petanque ground.
-     * This field is optional.
-     */
-    @OneToMany(mappedBy = "terrain")
-    @Schema(description = "The list of reservations associated with this petanque ground.",
-            implementation = Reservation.class)
-    private List<Reservation> reservations;
 }

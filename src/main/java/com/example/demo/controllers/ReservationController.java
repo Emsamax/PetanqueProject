@@ -1,6 +1,8 @@
 package com.example.demo.controllers;
 
+import com.example.demo.models.Reservation;
 import com.example.demo.dto.ReservationDTO;
+import com.example.demo.dto.ReservationIdDTO;
 import com.example.demo.models.ReservationId;
 import com.example.demo.services.ReservationService;
 import com.example.demo.utils.NotFoundException;
@@ -25,21 +27,25 @@ public class ReservationController {
     private ReservationService reservationService;
 
     /**
-     * Retrieve a reservation by its ID.
+     * Retrieve a reservation by its user ID and terrain ID.
      *
-     * @param id the ID of the reservation to retrieve
+     * @param userId the ID of the user making the reservation
+     * @param terrainId the ID of the terrain associated with the reservation
      * @return ResponseEntity containing the ReservationDTO if found
-     * @throws NotFoundException if no reservation with the specified ID is found
+     * @throws NotFoundException if no reservation with the specified userId and terrainId is found
      */
-    @GetMapping("/{id}")
-    @Operation(summary = "Get a reservation by ID", description = "Retrieve a reservation using its ID.")
+    @GetMapping("/{userId}/{terrainId}")
+    @Operation(summary = "Get a reservation by ID", description = "Retrieve a reservation using its userId and terrainId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved reservation"),
-            @ApiResponse(responseCode = "404", description = "Reservation ID not found"),
+            @ApiResponse(responseCode = "404", description = "Reservation not found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    public ResponseEntity<ReservationDTO> getReservationById(@PathVariable ReservationId id) throws NotFoundException {
-        ReservationDTO reservation = reservationService.getReservationById(id);
+    public ResponseEntity<ReservationDTO> getReservationById(@PathVariable Integer userId, @PathVariable Integer terrainId) throws NotFoundException {
+        // Construct the composite key (ReservationId) from the path variables
+        ReservationId reservationId = new ReservationId(userId, terrainId);
+
+        ReservationDTO reservation = reservationService.getReservationById(reservationId);
         return ResponseEntity.ok(reservation);
     }
 
@@ -80,43 +86,54 @@ public class ReservationController {
     }
 
     /**
-     * Update an existing reservation by ID.
+     * Update an existing reservation by user ID and terrain ID.
      *
-     * @param id the ID of the reservation to be updated
+     * @param userId the ID of the user making the reservation
+     * @param terrainId the ID of the terrain associated with the reservation
      * @param reservation the updated reservation data
      * @return ResponseEntity with status code 200 if the reservation is updated successfully
-     * @throws NotFoundException if the reservation with the given ID does not exist
+     * @throws NotFoundException if the reservation with the given userId and terrainId does not exist
      * @throws IllegalArgumentException if the provided data is invalid
      */
-    @PutMapping("/{id}")
+    @PutMapping("/{userId}/{terrainId}")
     @Operation(summary = "Update an existing reservation", description = "Update a reservation by providing the new data and reservation ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully updated reservation"),
             @ApiResponse(responseCode = "400", description = "Invalid data provided in the body"),
-            @ApiResponse(responseCode = "404", description = "Reservation ID not found"),
+            @ApiResponse(responseCode = "404", description = "Reservation not found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    public ResponseEntity<Void> updateReservation(@PathVariable ReservationId id, @RequestBody ReservationDTO reservation) throws NotFoundException, IllegalArgumentException {
+    public ResponseEntity<Void> updateReservation(@PathVariable Integer userId, @PathVariable Integer terrainId, @RequestBody ReservationDTO reservation) throws NotFoundException, IllegalArgumentException {
+        // Construct the composite key (ReservationId) from the path variables
+        ReservationIdDTO reservationId = new ReservationIdDTO(userId, terrainId);
+
+        // Set the Id
+        reservation.setId(reservationId);
+
         reservationService.updateReservation(reservation);
         return ResponseEntity.ok().build();
     }
 
     /**
-     * Delete a reservation by its ID.
+     * Delete a reservation by its user ID and terrain ID.
      *
-     * @param id the ID of the reservation to be deleted
+     * @param userId the ID of the user making the reservation
+     * @param terrainId the ID of the terrain associated with the reservation
      * @return ResponseEntity with status code 200 if the reservation is deleted successfully
-     * @throws NotFoundException if the reservation with the given ID does not exist
+     * @throws NotFoundException if the reservation with the given userId and terrainId does not exist
      */
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a reservation by ID", description = "Delete a reservation using its ID.")
+    @DeleteMapping("/{userId}/{terrainId}")
+    @Operation(summary = "Delete a reservation by ID", description = "Delete a reservation using its userId and terrainId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully deleted reservation"),
-            @ApiResponse(responseCode = "404", description = "Reservation ID not found"),
+            @ApiResponse(responseCode = "404", description = "Reservation not found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    public ResponseEntity<Void> deleteReservation(@PathVariable ReservationId id) throws NotFoundException {
-        reservationService.deleteReservationById(id);
+    public ResponseEntity<Void> deleteReservation(@PathVariable Integer userId, @PathVariable Integer terrainId) throws NotFoundException {
+        // Construct the composite key (ReservationId) from the path variables
+        ReservationId reservationId = new ReservationId(userId, terrainId);
+
+        reservationService.deleteReservationById(reservationId);
         return ResponseEntity.ok().build();
     }
 }

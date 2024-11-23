@@ -3,9 +3,6 @@ package com.example.demo.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -44,26 +41,4 @@ public class Reservation {
     @NotNull(message = "The reservation code cannot be null.")
     @Schema(description = "The number of reserved terrain.")
     private Integer reservation;
-
-    /**
-     * The utilisateur (user) associated with this reservation.
-     * This field is required and links the reservation to a specific user.
-     */
-    @ManyToOne
-    @MapsId("utilisateurId")
-    @JoinColumn(name = "utilisateur_id", nullable = false)
-    @NotNull(message = "The utilisateur (user) cannot be null.")
-    @Schema(description = "The user associated with the reservation.")
-    private Utilisateur utilisateur;
-
-    /**
-     * The terrain (petanque ground) associated with this reservation.
-     * This field is required and links the reservation to a specific petanque ground.
-     */
-    @ManyToOne
-    @MapsId("terrainId")
-    @JoinColumn(name = "terrain_id", nullable = false)
-    @NotNull(message = "The terrain (petanque ground) cannot be null.")
-    @Schema(description = "The petanque ground associated with the reservation.")
-    private Terrain terrain;
 }

@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * It includes user details such as name, email, password, and username.
  */
 @Data
+@AllArgsConstructor
 public class UtilisateurDTO {
 
     /**

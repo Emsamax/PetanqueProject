@@ -2,6 +2,7 @@ package com.example.demo.dto;
 
 import jakarta.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * It includes information such as the composite key for the reservation and the reservation details.
  */
 @Data
+@AllArgsConstructor
 public class ReservationDTO {
 
     /**

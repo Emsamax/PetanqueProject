@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * It includes information such as the ground's name, quantity, description, and geographic location.
  */
 @Data
+@AllArgsConstructor
 public class TerrainDTO {
 
     /**

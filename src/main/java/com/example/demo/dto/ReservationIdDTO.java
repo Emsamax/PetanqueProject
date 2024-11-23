@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import lombok.Data;
+import lombok.AllArgsConstructor;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * It includes the IDs of the user and the petanque ground involved in the reservation.
  */
 @Data
+@AllArgsConstructor
 public class ReservationIdDTO implements Serializable {
 
     /**

@@ -6,14 +6,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.List;
 
 /**
  * Represents a user in the system.
@@ -22,7 +19,7 @@ import java.util.List;
  */
 @Entity
 @Data
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "utilisateur")
 public class Utilisateur {
@@ -87,13 +84,4 @@ public class Utilisateur {
     @Size(min = 1, max = 100, message = "The username must be between 1 and 100 characters.")
     @Schema(description = "The username of the user.")
     private String username;
-
-    /**
-     * A list of reservations associated with the user.
-     * This field is optional and contains all reservations linked to this user.
-     */
-    @OneToMany(mappedBy = "utilisateur")
-    @Schema(description = "The list of reservations associated with the user.",
-            implementation = Reservation.class)
-    private List<Reservation> reservations;
 }
