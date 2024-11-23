@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.models.Terrain;
 import com.example.demo.dto.TerrainDTO;
 import com.example.demo.mappers.TerrainMapper;
 import com.example.demo.repositories.TerrainRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @NoArgsConstructor
 public class TerrainService {
+
     @Autowired
     private TerrainRepository terrainRepository;  // Repository for accessing terrain data in the database
 
@@ -98,5 +100,33 @@ public class TerrainService {
 
         // Delete the terrain from the database
         terrainRepository.deleteById(id);
+    }
+
+    /**
+     * Decrements the quantity of a terrain by a specified value.
+     * This method updates the quantity of terrain available by decreasing it based on the provided
+     * decrement value. It also ensures that the quantity does not fall below zero.
+     *
+     * @param id the ID of the terrain whose quantity is to be decremented
+     * @param decrementValue the value by which the quantity should be reduced
+     * @throws NotFoundException if the terrain with the given ID is not found
+     * @throws IllegalArgumentException if the decrement value is greater than the current available quantity
+     */
+    public void decrementQuantite(Integer id, Integer decrementValue) throws NotFoundException, IllegalArgumentException {
+        // Retrieve the terrain entity by its ID, throwing a NotFoundException if not found
+        Terrain terrain = terrainRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Terrain with ID " + id + " not found"));
+
+        // Get the current quantity of the terrain
+        Integer terrainQuantity = terrain.getQuantite();
+
+        // Ensure that the requested decrement does not exceed the available quantity
+        if (terrainQuantity < decrementValue) {
+            // If not enough quantity is available, throw an IllegalArgumentException
+            throw new IllegalArgumentException("You can't reserve " + decrementValue +  " number of terrains, as only " + terrainQuantity  + " plots are available");
+        }
+
+        // If the decrement is valid, update the terrain's quantity
+        terrainRepository.decrementQuantiteById(id, decrementValue);
     }
 }

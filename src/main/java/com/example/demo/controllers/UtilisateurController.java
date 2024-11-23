@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 @RequestMapping("/utilisateur")  // Base URL for all user-related endpoints
 public class UtilisateurController {
+
     @Autowired
     private UtilisateurService utilisateurService;  // Service to handle user-related logic
 

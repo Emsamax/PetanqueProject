@@ -20,6 +20,7 @@ import java.util.stream.StreamSupport;
 @Service
 @NoArgsConstructor
 public class UtilisateurService {
+
     @Autowired
     private UtilisateurRepository utilisateurRepository;  // Repository for database access
 

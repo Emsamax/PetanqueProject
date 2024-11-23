@@ -22,8 +22,7 @@ public class ReservationController {
     // Get a reservation by ID
     @GetMapping("/{id}")
     public ResponseEntity<ReservationDTO> getReservationById(@PathVariable ReservationId id) throws Exception {
-        Optional<ReservationDTO> reservationDTO = reservationService.getReservationById(id);
-        ReservationDTO reservation = reservationDTO.get();
+        ReservationDTO reservation = reservationService.getReservationById(id);
         return ResponseEntity.ok(reservation);
     }
 
