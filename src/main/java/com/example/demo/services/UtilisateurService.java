@@ -61,9 +61,6 @@ public class UtilisateurService {
     public void saveUtilisateur(UtilisateurDTO user) throws IllegalArgumentException {
         String userMail = user.getMail();
 
-        // Delete the id sent by the frontend for security reasons
-        user.setId(null);
-
         // Check if a user with the same email already exists
         if (utilisateurRepository.findByMail(userMail) != null) {
             throw new IllegalArgumentException("User with mail " + userMail + " already exists");
@@ -83,9 +80,6 @@ public class UtilisateurService {
      */
     public void updateUtilisateur(Integer id, UtilisateurDTO user) throws NotFoundException, IllegalArgumentException {
         String userNewMail = user.getMail();
-
-        // Delete the id sent by the frontend for security reasons
-        user.setId(null);
 
         // Check if the user exists
         if (!utilisateurRepository.existsById(id)) {

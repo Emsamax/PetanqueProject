@@ -57,9 +57,6 @@ public class TerrainService {
      * @param terrain the TerrainDTO to save (either create or update)
      */
     public void saveTerrain(TerrainDTO terrain) {
-        // Set the ID to null to avoid overwriting the ID during the update
-        terrain.setId(null);
-
         // Save the terrain, converting the DTO to an entity before saving
         terrainRepository.save(terrainMapper.toEntity(terrain));
     }
@@ -77,9 +74,6 @@ public class TerrainService {
         if (!terrainRepository.existsById(id)) {
             throw new NotFoundException("Terrain with ID " + id + " not found");  // Exception if not found
         }
-
-        // Set the ID to null to avoid overwriting the ID during the update
-        terrain.setId(null);
 
         // Save the updated terrain entity
         terrainRepository.save(terrainMapper.toEntity(terrain));
