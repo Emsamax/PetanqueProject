@@ -120,7 +120,7 @@ public class ReservationService {
         if (differenceQuantity >= 0) {
             terrainService.incrementQuantite(terrainId, differenceQuantity);
         } else {
-            terrainService.decrementQuantite(terrainId, differenceQuantity);
+            terrainService.decrementQuantite(terrainId, (-1) * differenceQuantity);
         }
 
         // Save the updated reservation
