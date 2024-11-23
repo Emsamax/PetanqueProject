@@ -1,6 +1,5 @@
 package com.example.demo.utils;
 
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RESTResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
-     * Handles exceptions such as IllegalArgumentException and ChangeSetPersister.NotFoundException.
+     * Handle exceptions IllegalArgumentException and NotFoundException.
      * This method generates custom error responses based on the exception type. It responds with a
      * corresponding HTTP status and a message explaining the error in detail.
      *
@@ -25,12 +24,12 @@ public class RESTResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * @param request the web request that triggered the exception
      * @return a ResponseEntity containing the error details and corresponding HTTP status
      */
-    @ExceptionHandler(value = {IllegalArgumentException.class, ChangeSetPersister.NotFoundException.class})
+    @ExceptionHandler(value = {IllegalArgumentException.class, NotFoundException.class})
     protected ResponseEntity<Object> handleConflict(Exception exception, WebRequest request) {
         // Create an ErrorResponse object to encapsulate the error details
         ErrorResponse errorResponse = new ErrorResponse();
 
-        // Handling IllegalArgumentException: Usually indicates a bad request due to invalid input
+        // Handling IllegalArgumentException: Indicates a bad request due to invalid input
         if (exception instanceof IllegalArgumentException)
         {
             errorResponse.setError("Bad Request");
@@ -40,14 +39,11 @@ public class RESTResponseEntityExceptionHandler extends ResponseEntityExceptionH
             // Return a ResponseEntity with 400 Bad Request status and the error response details
             return handleExceptionInternal(exception, errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
         }
-        // Handling ChangeSetPersister.NotFoundException: Represents a 'not found' error, typically for missing resources
-        else if (exception instanceof ChangeSetPersister.NotFoundException)
+        else if (exception instanceof NotFoundException)
         {
             errorResponse.setError("Not Found");
             errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
-            errorResponse.setMessage(String.format("The requested resource could not be found: %s.", exception.getMessage()));
-
-            // Return a ResponseEntity with 404 Not Found status and the error response details
+            errorResponse.setMessage(String.format("Parameter error: %s.", exception.getMessage()));
             return handleExceptionInternal(exception, errorResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
         }
 

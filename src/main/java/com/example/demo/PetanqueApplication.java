@@ -18,5 +18,8 @@ public class PetanqueApplication {
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(PetanqueApplication.class, args);
+
+		// Print the OpenAPI link in the console after application startup
+		System.out.println("\nOpenAPI documentation is available at: http://localhost:8080/swagger-ui/index.html\n");
 	}
 }

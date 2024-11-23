@@ -3,76 +3,117 @@ package com.example.demo.services;
 import com.example.demo.dto.UtilisateurDTO;
 import com.example.demo.mappers.UtilisateurMapper;
 import com.example.demo.repositories.UtilisateurRepository;
+import com.example.demo.utils.NotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import lombok.NoArgsConstructor;
 
-import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 /**
- * Classe de services -> conversions DTO
+ * User service class.
+ * This class is responsible for handling business logic related to users, such as retrieving,
+ * creating, updating, and deleting user data.
  */
 @Service
 @NoArgsConstructor
 public class UtilisateurService {
     @Autowired
-    private UtilisateurRepository utilisateurRepository;
+    private UtilisateurRepository utilisateurRepository;  // Repository for database access
 
     @Autowired
-    private UtilisateurMapper utilisateurMapper;
+    private UtilisateurMapper utilisateurMapper;  // Mapper to convert between DTOs and entities
 
-    public Optional<UtilisateurDTO> getUtilisateurById(Integer id) throws ChangeSetPersister.NotFoundException {
-        // Si l'utilisateur n'est pas trouvé, une exception NotFound est lancée
-        return Optional.ofNullable(utilisateurRepository.findById(id)
-                .map(utilisateurMapper::toDTO)
-                .orElseThrow(ChangeSetPersister.NotFoundException::new));
+    /**
+     * Retrieve a user by ID.
+     *
+     * @param id the ID of the user to retrieve
+     * @return the user DTO if found
+     * @throws NotFoundException if the user with the given ID is not found
+     */
+    public UtilisateurDTO getUtilisateurById(Integer id) throws NotFoundException {
+        return utilisateurRepository.findById(id)  // Attempt to find the user by ID
+                .map(utilisateurMapper::toDTO)  // Convert to DTO if found
+                .orElseThrow(() -> new NotFoundException("User with ID " + id + " not found"));
     }
 
+    /**
+     * Retrieve all users.
+     * Converts each user entity found in the repository into a DTO.
+     *
+     * @return a collection of user DTOs
+     */
     public Iterable<UtilisateurDTO> getAllUtilisateur() {
-        // Récupère tous les utilisateurs et les convertit en DTO
-        return StreamSupport.stream(utilisateurRepository.findAll().spliterator(), false)
-                .map(utilisateurMapper::toDTO).toList();
+        return StreamSupport.stream(utilisateurRepository.findAll().spliterator(), false)  // Convert entities to DTOs
+                .map(utilisateurMapper::toDTO)  // Map each entity to a DTO
+                .toList();
     }
 
-    public void saveUtilisateur(UtilisateurDTO utilisateur) {
-        // Vérifie si l'email ou l'id donné n'exisite pas déjà
-        if (utilisateurRepository.findByMail(utilisateur.getMail()) != null) {
-            throw new IllegalArgumentException("Given mail already exists");
+    /**
+     * Save a new user or update an existing user.
+     *
+     * @param user the user DTO to save
+     * @throws IllegalArgumentException if the email already exists
+     */
+    public void saveUtilisateur(UtilisateurDTO user) throws IllegalArgumentException {
+        String userMail = user.getMail();
+
+        // Delete the id sent by the frontend for security reasons
+        user.setId(null);
+
+        // Check if a user with the same email already exists
+        if (utilisateurRepository.findByMail(userMail) != null) {
+            throw new IllegalArgumentException("User with mail " + userMail + " already exists");
         }
 
-        if (utilisateur.getId() != null) {
-            throw new IllegalArgumentException("Do not send user id");
-        }
-
-        // Sauvegarde un nouvel utilisateur ou un utilisateur mis à jour
-        utilisateurRepository.save(utilisateurMapper.toEntity(utilisateur));
+        // Save or update the user in the database
+        utilisateurRepository.save(utilisateurMapper.toEntity(user));
     }
 
-    public void updateUtilisateur(Integer id, UtilisateurDTO utilisateur) throws ChangeSetPersister.NotFoundException, IllegalArgumentException {
-        // Vérifie si l'utilisateur existe avant de procéder à la mise à jour
+    /**
+     * Update an existing user.
+     *
+     * @param id the ID of the user to update
+     * @param user the updated user DTO
+     * @throws IllegalArgumentException if the email already exists or if the user does not exist
+     * @throws NotFoundException if the user with the given ID is not found
+     */
+    public void updateUtilisateur(Integer id, UtilisateurDTO user) throws NotFoundException, IllegalArgumentException {
+        String userNewMail = user.getMail();
+
+        // Delete the id sent by the frontend for security reasons
+        user.setId(null);
+
+        // Check if the user exists
         if (!utilisateurRepository.existsById(id)) {
-            throw new ChangeSetPersister.NotFoundException();
+            throw new NotFoundException("User with id " + id + " not found");
         }
 
-        // Vérifie si l'email n'exsite pas déjà
-        if (utilisateurRepository.findByMail(utilisateur.getMail()) != null) {
-            throw new IllegalArgumentException();
+        // Check if a user with the same email already exists
+        if (utilisateurRepository.findByMail(userNewMail) != null) {
+            throw new IllegalArgumentException("User with mail " + userNewMail + " already exists");
         }
 
-        // Supprime l'utilisateur existant puis sauvegarde le nouvel utilisateur
-        utilisateur.setId(id);
-        utilisateurRepository.save(utilisateurMapper.toEntity(utilisateur));
+        // Update the user and save in the database
+        user.setId(id);  // Set the ID to ensure the existing entity is updated
+        utilisateurRepository.save(utilisateurMapper.toEntity(user));
     }
 
-    public void deleteUtilisateurById(Integer id) throws ChangeSetPersister.NotFoundException {
-        // Vérifie si l'utilisateur existe avant de le supprimer
+    /**
+     * Delete a user by ID.
+     *
+     * @param id the ID of the user to delete
+     * @throws NotFoundException if the user with the given ID is not found
+     */
+    public void deleteUtilisateurById(Integer id) throws NotFoundException {
+        // Check if the user exists before attempting to delete
         if (!utilisateurRepository.existsById(id)) {
-            throw new ChangeSetPersister.NotFoundException();
+            throw new NotFoundException("User with id " + id + " not found");
         }
+
+        // Delete the user from the database
         utilisateurRepository.deleteById(id);
     }
 }
