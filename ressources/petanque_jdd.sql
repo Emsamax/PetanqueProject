@@ -37,3 +37,28 @@ INSERT INTO `terrain` VALUES
 (35,"Boulodrome (Boules Lyonnaises)",2,NULL,"47.3766733512, 0.6990401446"),
 (36,"Boulodrome Degas",2,NULL,"47.37044, 0.7134390003"),
 (37,"Stadium de pétanque et sports de boules de la ville de Tours",0,NULL,"47.3783450397, 0.7354783352");
+
+-- Utilisateur 1
+INSERT INTO `utilisateur` (`nom`, `prenom`, `mail`, `password`, `username`) 
+VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password123', 'jdupont');
+
+-- Utilisateur 2
+INSERT INTO `utilisateur` (`nom`, `prenom`, `mail`, `password`, `username`) 
+VALUES ('Martin', 'Alice', 'alice.martin@example.com', 'alicePass2024', 'amartin');
+
+-- Utilisateur 3
+INSERT INTO `utilisateur` (`nom`, `prenom`, `mail`, `password`, `username`) 
+VALUES ('Bernard', 'Luc', 'luc.bernard@example.com', 'luc2024!', 'lbernard');
+
+
+-- Réservation 1
+INSERT INTO `reservation` (`utilisateur_id`, `terrain_id`, `reservation`) 
+VALUES (1, 1, UNIX_TIMESTAMP('2024-11-05 15:00:00'));
+
+-- Réservation 2
+INSERT INTO `reservation` (`utilisateur_id`, `terrain_id`, `reservation`) 
+VALUES (2, 3, UNIX_TIMESTAMP('2024-11-06 10:00:00'));
+
+-- Réservation 3
+INSERT INTO `reservation` (`utilisateur_id`, `terrain_id`, `reservation`) 
+VALUES (3, 2, UNIX_TIMESTAMP('2024-11-07 12:00:00'));
