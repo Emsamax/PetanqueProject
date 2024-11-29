@@ -71,6 +71,9 @@ public class UtilisateurService {
             throw new IllegalArgumentException("User with mail " + userMail + " already exists");
         }
 
+        // Encode password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         // Save or update the user in the database
         utilisateurRepository.save(utilisateurMapper.toEntity(user));
     }
@@ -123,7 +126,7 @@ public class UtilisateurService {
                 .orElseThrow(() -> new NotFoundException("User with mail " + mail + " not found"));
 
         // If the password doesn't correspond, throw exception
-        if (!utilisateur.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(password, utilisateur.getPassword())) {
             throw new NotFoundException("Wrong password");
         }
 
