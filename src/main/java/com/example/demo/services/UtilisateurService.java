@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.dto.UtilisateurDTO;
 import com.example.demo.mappers.UtilisateurMapper;
+import com.example.demo.models.Utilisateur;
 import com.example.demo.repositories.UtilisateurRepository;
 import com.example.demo.utils.NotFoundException;
 
@@ -22,10 +23,10 @@ import java.util.stream.StreamSupport;
 public class UtilisateurService {
 
     @Autowired
-    private UtilisateurRepository utilisateurRepository;  // Repository for database access
+    private UtilisateurRepository utilisateurRepository; // Repository for database access
 
     @Autowired
-    private UtilisateurMapper utilisateurMapper;  // Mapper to convert between DTOs and entities
+    private UtilisateurMapper utilisateurMapper; // Mapper to convert between DTOs and entities
 
     /**
      * Retrieve a user by ID.
@@ -87,7 +88,7 @@ public class UtilisateurService {
         }
 
         // Check if a user with the same email already exists
-        if (utilisateurRepository.findByMail(userNewMail) != null) {
+        if (utilisateurRepository.findByMail(userNewMail).isPresent()) {
             throw new IllegalArgumentException("User with mail " + userNewMail + " already exists");
         }
 
@@ -110,5 +111,10 @@ public class UtilisateurService {
 
         // Delete the user from the database
         utilisateurRepository.deleteById(id);
+    }
+
+    public Boolean login(String mail) throws NotFoundException {
+
+        return false;
     }
 }

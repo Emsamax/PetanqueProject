@@ -5,6 +5,8 @@ import com.example.demo.models.Utilisateur;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * Repository interface for managing `Utilisateur` entities.
  * Extends `CrudRepository` to provide basic CRUD operations for the `Utilisateur` entity.
@@ -19,5 +21,5 @@ public interface UtilisateurRepository extends CrudRepository<Utilisateur, Integ
     * @param mail the email address to search for
     * @return the `Utilisateur` entity associated with the provided email address, or `null` if no user is found
     */
-   Utilisateur findByMail(String mail);
+   Optional<Utilisateur> findByMail(String mail);
 }

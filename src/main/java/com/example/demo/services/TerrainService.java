@@ -19,10 +19,10 @@ import org.springframework.stereotype.Service;
 public class TerrainService {
 
     @Autowired
-    private TerrainRepository terrainRepository;  // Repository for accessing terrain data in the database
+    private TerrainRepository terrainRepository; // Repository for accessing terrain data in the database
 
     @Autowired
-    private TerrainMapper terrainMapper;  // Mapper for converting between Terrain entities and DTOs
+    private TerrainMapper terrainMapper; // Mapper for converting between Terrain entities and DTOs
 
     /**
      * Retrieves a terrain by its ID.
