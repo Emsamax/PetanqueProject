@@ -7,6 +7,8 @@ import com.example.demo.repositories.UtilisateurRepository;
 import com.example.demo.utils.NotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.NoArgsConstructor;
@@ -27,6 +29,8 @@ public class UtilisateurService {
 
     @Autowired
     private UtilisateurMapper utilisateurMapper; // Mapper to convert between DTOs and entities
+
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     /**
      * Retrieve a user by ID.
@@ -113,8 +117,16 @@ public class UtilisateurService {
         utilisateurRepository.deleteById(id);
     }
 
-    public Boolean login(String mail) throws NotFoundException {
+    public Boolean login(String mail, String password) throws NotFoundException {
+        // Get the user
+        Utilisateur utilisateur = utilisateurRepository.findByMail(mail)
+                .orElseThrow(() -> new NotFoundException("User with mail " + mail + " not found"));
 
-        return false;
+        // If the password doesn't correspond, throw exception
+        if (!utilisateur.getPassword().equals(password)) {
+            throw new NotFoundException("Wrong password");
+        }
+
+        return true;
     }
 }

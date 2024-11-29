@@ -32,7 +32,8 @@ public class LoginController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping("/{id}")
-    public void login(@RequestBody String mail) throws NotFoundException {
+    public ResponseEntity<Void> login(@RequestBody String mail, @RequestBody String password) throws NotFoundException {
 
+        return ResponseEntity.ok().build();
     }
 }
