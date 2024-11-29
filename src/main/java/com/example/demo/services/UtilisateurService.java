@@ -7,8 +7,8 @@ import com.example.demo.repositories.UtilisateurRepository;
 import com.example.demo.utils.NotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.NoArgsConstructor;
@@ -30,7 +30,12 @@ public class UtilisateurService {
     @Autowired
     private UtilisateurMapper utilisateurMapper; // Mapper to convert between DTOs and entities
 
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder = new Pbkdf2PasswordEncoder(
+            "secret",
+            16,
+            10000,
+            Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA256
+    );
 
     /**
      * Retrieve a user by ID.
@@ -60,22 +65,24 @@ public class UtilisateurService {
     /**
      * Save a new user or update an existing user.
      *
-     * @param user the user DTO to save
+     * @param userDTO the user DTO to save
      * @throws IllegalArgumentException if the email already exists
      */
-    public void saveUtilisateur(UtilisateurDTO user) throws IllegalArgumentException {
-        String userMail = user.getMail();
+    public void saveUtilisateur(UtilisateurDTO userDTO) throws IllegalArgumentException {
+        String userMail = userDTO.getMail();
 
         // Check if a user with the same email already exists
-        if (utilisateurRepository.findByMail(userMail) != null) {
+        if (utilisateurRepository.findByMail(userMail).isPresent()) {
             throw new IllegalArgumentException("User with mail " + userMail + " already exists");
         }
 
+        Utilisateur user = utilisateurMapper.toEntity(userDTO);
+
         // Encode password
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         // Save or update the user in the database
-        utilisateurRepository.save(utilisateurMapper.toEntity(user));
+        utilisateurRepository.save(user);
     }
 
     /**
@@ -99,8 +106,10 @@ public class UtilisateurService {
             throw new IllegalArgumentException("User with mail " + userNewMail + " already exists");
         }
 
+        // Set the ID to ensure the existing entity is updated
+        user.setId(id);
+
         // Update the user and save in the database
-        user.setId(id);  // Set the ID to ensure the existing entity is updated
         utilisateurRepository.save(utilisateurMapper.toEntity(user));
     }
 
