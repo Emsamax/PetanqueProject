@@ -22,18 +22,16 @@ public class LoginController {
     @Autowired
     private UtilisateurService utilisateurService; // Service to handle user-related logic
 
-    @Autowired
-    private UtilisateurMapper utilisateurMapper; // Mapper to convert between DTOs and entities
-
     @Operation(summary = "", description = "")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = ""),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @GetMapping("/{id}")
-    public ResponseEntity<Void> login(@RequestBody String mail, @RequestBody String password) throws NotFoundException {
-
+    @GetMapping("/{mail}/{password}")
+    public ResponseEntity<Void> login(@PathVariable String mail, @PathVariable String password) throws NotFoundException {
+        utilisateurService.login(mail, password);
         return ResponseEntity.ok().build();
     }
+
 }
