@@ -1,6 +1,5 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.Reservation;
 import com.example.demo.dto.ReservationDTO;
 import com.example.demo.dto.ReservationIdDTO;
 import com.example.demo.models.ReservationId;

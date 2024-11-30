@@ -13,7 +13,6 @@ import jakarta.validation.constraints.NotNull;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-
 /**
  * Represents a reservation in the system.
  * This class is mapped to the "reservation" table in the database.

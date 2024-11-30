@@ -129,7 +129,14 @@ public class UtilisateurService {
         utilisateurRepository.deleteById(id);
     }
 
-    public Boolean login(String mail, String password) throws NotFoundException {
+    /**
+     * Authenticates a user by email and password.
+     *
+     * @param mail      The user's email
+     * @param password  The provided password
+     * @throws NotFoundException if the user is not found or the password is incorrect
+     */
+    public void login(String mail, String password) throws NotFoundException {
         // Get the user
         Utilisateur utilisateur = utilisateurRepository.findByMail(mail)
                 .orElseThrow(() -> new NotFoundException("User with mail " + mail + " not found"));
@@ -138,7 +145,5 @@ public class UtilisateurService {
         if (!passwordEncoder.matches(password, utilisateur.getPassword())) {
             throw new NotFoundException("Wrong password");
         }
-
-        return true;
     }
 }
