@@ -48,8 +48,6 @@ CREATE TABLE `reservation` (
   CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`terrain_id`) REFERENCES `terrain` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
-
-
 INSERT INTO `terrain` VALUES 
 (1,"Zone Sportive des Mesliers",3,NULL,"47.3391800013, 0.7174200006"),
 (2,"Les Charmes",1,NULL,"47.4923500008, 0.6983300011"),
@@ -89,18 +87,21 @@ INSERT INTO `terrain` VALUES
 (36,"Boulodrome Degas",2,NULL,"47.37044, 0.7134390003"),
 (37,"Stadium de pétanque et sports de boules de la ville de Tours",0,NULL,"47.3783450397, 0.7354783352");
 
--- Utilisateur 1
-INSERT INTO `utilisateur` (`nom`, `prenom`, `mail`, `password`, `username`) 
-VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password123', 'jdupont');
+--
+-- Insertions
+--
 
--- Utilisateur 2
+-- Utilisateur 1, password : password123
 INSERT INTO `utilisateur` (`nom`, `prenom`, `mail`, `password`, `username`) 
-VALUES ('Martin', 'Alice', 'alice.martin@example.com', 'alicePass2024', 'amartin');
+VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'e324a13b398fcb7b1433e8847fb0bbae401413fdbc1094c7989d31f85de42d6d032b76a832b6bba4b25dde62d94adaed', 'jdupont');
 
--- Utilisateur 3
+-- Utilisateur 2, password : password123
 INSERT INTO `utilisateur` (`nom`, `prenom`, `mail`, `password`, `username`) 
-VALUES ('Bernard', 'Luc', 'luc.bernard@example.com', 'luc2024!', 'lbernard');
+VALUES ('Martin', 'Alice', 'alice.martin@example.com', 'e324a13b398fcb7b1433e8847fb0bbae401413fdbc1094c7989d31f85de42d6d032b76a832b6bba4b25dde62d94adaed', 'amartin');
 
+-- Utilisateur 3, password : password123
+INSERT INTO `utilisateur` (`nom`, `prenom`, `mail`, `password`, `username`) 
+VALUES ('Bernard', 'Luc', 'luc.bernard@example.com', 'e324a13b398fcb7b1433e8847fb0bbae401413fdbc1094c7989d31f85de42d6d032b76a832b6bba4b25dde62d94adaed', 'lbernard');
 
 -- Réservation 1
 INSERT INTO `reservation` (`utilisateur_id`, `terrain_id`, `reservation`) 
