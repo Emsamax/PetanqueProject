@@ -1,3 +1,52 @@
+-- Drop the database if it already exists
+DROP DATABASE IF EXISTS petanque;
+
+-- Create a new database named "petanque"
+CREATE DATABASE petanque;
+
+-- Use the newly created "petanque" database
+USE petanque;
+
+--
+-- Table structure for table `utilisateur`
+--
+
+CREATE TABLE `utilisateur` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(100) NOT NULL,
+  `prenom` varchar(100) NOT NULL,
+  `mail` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+--
+-- Table structure for table `terrain`
+--
+
+CREATE TABLE `terrain` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(100) NOT NULL,
+  `quantite` int(11) NOT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `point_geo` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+--
+-- Table structure for table `reservation`
+--
+
+CREATE TABLE `reservation` (
+  `utilisateur_id` int(11) NOT NULL,
+  `terrain_id` int(11) NOT NULL,
+  `reservation` int(11) NOT NULL,
+  PRIMARY KEY (`utilisateur_id`,`terrain_id`),
+  KEY `terrain_id` (`terrain_id`),
+  CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateur` (`id`),
+  CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`terrain_id`) REFERENCES `terrain` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 INSERT INTO `terrain` VALUES 
 (1,"Zone Sportive des Mesliers",3,NULL,"47.3391800013, 0.7174200006"),
@@ -38,18 +87,21 @@ INSERT INTO `terrain` VALUES
 (36,"Boulodrome Degas",2,NULL,"47.37044, 0.7134390003"),
 (37,"Stadium de pétanque et sports de boules de la ville de Tours",0,NULL,"47.3783450397, 0.7354783352");
 
--- Utilisateur 1
-INSERT INTO `utilisateur` (`nom`, `prenom`, `mail`, `password`, `username`) 
-VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password123', 'jdupont');
+--
+-- Insertions
+--
 
--- Utilisateur 2
+-- Utilisateur 1, mot de passe : password
 INSERT INTO `utilisateur` (`nom`, `prenom`, `mail`, `password`, `username`) 
-VALUES ('Martin', 'Alice', 'alice.martin@example.com', 'alicePass2024', 'amartin');
+VALUES ('BRUNET', 'Sylvain', 'sylvain.brunet@etu.univ-tours.fr', 'e662ee5862b55e79cc3b9454cf2689359620a6e6411ea9be9ef9b6268958019e5d60aae1f64d6aaeb53b142d979cb008', 'S');
 
--- Utilisateur 3
+-- Utilisateur 2, mot de passe : password
 INSERT INTO `utilisateur` (`nom`, `prenom`, `mail`, `password`, `username`) 
-VALUES ('Bernard', 'Luc', 'luc.bernard@example.com', 'luc2024!', 'lbernard');
+VALUES ('Martin', 'Alice', 'alice.martin@example.com', 'e662ee5862b55e79cc3b9454cf2689359620a6e6411ea9be9ef9b6268958019e5d60aae1f64d6aaeb53b142d979cb008', 'amartin');
 
+-- Utilisateur 3, mot de passe : password
+INSERT INTO `utilisateur` (`nom`, `prenom`, `mail`, `password`, `username`) 
+VALUES ('Bernard', 'Luc', 'luc.bernard@example.com', 'e662ee5862b55e79cc3b9454cf2689359620a6e6411ea9be9ef9b6268958019e5d60aae1f64d6aaeb53b142d979cb008', 'lbernard');
 
 -- Réservation 1
 INSERT INTO `reservation` (`utilisateur_id`, `terrain_id`, `reservation`) 
