@@ -75,6 +75,8 @@ public class TerrainService {
             throw new NotFoundException("Terrain with ID " + id + " not found");  // Exception if not found
         }
 
+        terrain.setId(id);
+
         // Save the updated terrain entity
         terrainRepository.save(terrainMapper.toEntity(terrain));
     }
