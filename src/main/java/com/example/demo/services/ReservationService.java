@@ -69,29 +69,35 @@ public class ReservationService {
      * Creates a new reservation.
      * Validates the existence of the user and terrain, then decrements the terrain's quantity if valid.
      *
-     * @param reservation the ReservationDTO to save
-     * @throws NotFoundException if the user or terrain is not found
+     * @param reservationDTO the ReservationDTO to save
+     * @throws NotFoundException if the user, terrain or reservation is not found
      * @throws IllegalArgumentException if the reservation quantity exceeds available terrain quantity
      */
     @Transactional
-    public void saveReservation(ReservationDTO reservation) throws NotFoundException, IllegalArgumentException {
+    public void saveReservation(ReservationDTO reservationDTO) throws NotFoundException, IllegalArgumentException {
         // Check if the user exists
-        if (!utilisateurRepository.existsById(reservation.getId().getUtilisateurId())) {
-            throw new NotFoundException("User with ID " + reservation.getId().getUtilisateurId() + " not found");
+        if (!utilisateurRepository.existsById(reservationDTO.getId().getUtilisateurId())) {
+            throw new NotFoundException("User with ID " + reservationDTO.getId().getUtilisateurId() + " not found");
         }
 
         // Check if the terrain exists
-        if (!terrainRepository.existsById(reservation.getId().getTerrainId())) {
-            throw new NotFoundException("Terrain with ID " + reservation.getId().getTerrainId() + " not found");
+        if (!terrainRepository.existsById(reservationDTO.getId().getTerrainId())) {
+            throw new NotFoundException("Terrain with ID " + reservationDTO.getId().getTerrainId() + " not found");
+        }
+
+        // Convert DTO to entity
+        Reservation reservation = reservationMapper.toEntity(reservationDTO);
+
+        // Check if the reservation already exists
+        if (reservationRepository.existsById(reservation.getId())) {
+            throw new NotFoundException("Reservation with ID " + reservation.getId() + " already exists");
         }
 
         // Decrement terrain quantity based on the reservation
-        terrainService.decrementQuantite(reservation.getId().getTerrainId(), reservation.getReservation());
-
-        System.out.println(reservationMapper.toEntity(reservation));
+        terrainService.decrementQuantite(reservationDTO.getId().getTerrainId(), reservationDTO.getReservation());
 
         // Save the reservation
-        reservationRepository.save(reservationMapper.toEntity(reservation));
+        reservationRepository.save(reservation);
     }
 
     /**
