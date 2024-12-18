@@ -1,9 +1,6 @@
 package com.example.demo.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,4 +37,12 @@ public class Reservation {
     @NotNull(message = "The reservation code cannot be null.")
     @Schema(description = "The number of reserved terrain.")
     private Integer reservation;
+
+    @ManyToOne
+    @MapsId("utilisateurId")
+    private Utilisateur utilisateur;
+
+    @ManyToOne
+    @MapsId("terrainId")
+    private Terrain terrain;
 }

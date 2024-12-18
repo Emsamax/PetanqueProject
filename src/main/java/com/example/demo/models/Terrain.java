@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents the petanque ground in the system.
  * This class is mapped to the "terrain" table in the database.
@@ -67,4 +70,8 @@ public class Terrain {
     @NotBlank(message = "The geographic point cannot be empty.")
     @Schema(description = "The geographic point (location) of the petanque ground (maximum 100 characters).")
     private String pointGeo;
+
+    // Relation avec les réservations
+    @OneToMany(mappedBy = "terrain", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
 }

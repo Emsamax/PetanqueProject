@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a user in the system.
  * This class is mapped to the "utilisateur" table in the database.
@@ -85,4 +88,8 @@ public class Utilisateur {
     @Size(min = 1, max = 100, message = "The username must be between 1 and 100 characters.")
     @Schema(description = "The username of the user.")
     private String username;
+
+    // Relation avec les réservations
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
 }
