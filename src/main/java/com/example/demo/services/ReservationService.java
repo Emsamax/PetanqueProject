@@ -27,12 +27,6 @@ public class ReservationService {
     private ReservationRepository reservationRepository;
 
     @Autowired
-    private TerrainRepository terrainRepository;
-
-    @Autowired
-    private UtilisateurRepository utilisateurRepository;
-
-    @Autowired
     private ReservationMapper reservationMapper;
 
     @Autowired
@@ -40,6 +34,9 @@ public class ReservationService {
 
     @Autowired
     private TerrainService terrainService;
+
+    @Autowired
+    private UtilisateurService utilisateurService;
 
     /**
      * Retrieves a reservation by its ID.
@@ -76,12 +73,12 @@ public class ReservationService {
     @Transactional
     public void saveReservation(ReservationDTO reservationDTO) throws NotFoundException, IllegalArgumentException {
         // Check if the user exists
-        if (!utilisateurRepository.existsById(reservationDTO.getId().getUtilisateurId())) {
+        if (!utilisateurService.existsById(reservationDTO.getId().getUtilisateurId())) {
             throw new NotFoundException("User with ID " + reservationDTO.getId().getUtilisateurId() + " not found");
         }
 
         // Check if the terrain exists
-        if (!terrainRepository.existsById(reservationDTO.getId().getTerrainId())) {
+        if (!terrainService.existsById(reservationDTO.getId().getTerrainId())) {
             throw new NotFoundException("Terrain with ID " + reservationDTO.getId().getTerrainId() + " not found");
         }
 

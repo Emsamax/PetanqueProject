@@ -149,4 +149,13 @@ public class TerrainService {
         terrainRepository.incrementQuantiteById(id, incrementValue);
     }
 
+    /**
+     * Checks if a terrain with the given ID exists.
+     *
+     * @param id the ID of the terrain to check for existence
+     * @return true if a terrain with the given ID exists, false otherwise
+     */
+    public boolean existsById(Integer id) {
+        return terrainRepository.existsById(id);
+    }
 }

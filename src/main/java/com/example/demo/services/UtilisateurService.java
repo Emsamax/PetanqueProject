@@ -146,4 +146,14 @@ public class UtilisateurService {
             throw new NotFoundException("Wrong password");
         }
     }
+
+    /**
+     * Checks if a user with the given ID exists.
+     *
+     * @param id the ID of the user to check for existence
+     * @return true if a user with the given ID exists, false otherwise
+     */
+    public boolean existsById(Integer id) {
+        return utilisateurRepository.existsById(id);
+    }
 }
