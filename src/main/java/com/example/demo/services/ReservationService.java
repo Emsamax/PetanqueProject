@@ -1,10 +1,14 @@
 package com.example.demo.services;
 
+import com.example.demo.mappers.TerrainMapper;
+import com.example.demo.mappers.UtilisateurMapper;
 import com.example.demo.models.Reservation;
 import com.example.demo.dto.ReservationDTO;
 import com.example.demo.mappers.ReservationIdMapper;
 import com.example.demo.mappers.ReservationMapper;
 import com.example.demo.models.ReservationId;
+import com.example.demo.models.Terrain;
+import com.example.demo.models.Utilisateur;
 import com.example.demo.repositories.*;
 import com.example.demo.utils.NotFoundException;
 
@@ -37,6 +41,12 @@ public class ReservationService {
 
     @Autowired
     private UtilisateurService utilisateurService;
+
+    @Autowired
+    private UtilisateurMapper utilisateurMapper;
+
+    @Autowired
+    private TerrainMapper terrainMapper;
 
     /**
      * Retrieves a reservation by its ID.
@@ -85,9 +95,17 @@ public class ReservationService {
         // Convert DTO to entity
         Reservation reservation = reservationMapper.toEntity(reservationDTO);
 
+        // Retrieve the actual Utilisateur and Terrain entities
+        Utilisateur utilisateur = utilisateurMapper.toEntity(utilisateurService.getUtilisateurById(reservation.getId().getUtilisateurId()));
+        Terrain terrain = terrainMapper.toEntity(terrainService.getTerrainById(reservation.getId().getTerrainId()));
+
+        // Set the actual entities in the Reservation object
+        reservation.setUtilisateur(utilisateur);
+        reservation.setTerrain(terrain);
+
         // Check if the reservation already exists
         if (reservationRepository.existsById(reservation.getId())) {
-            throw new NotFoundException("Reservation with ID " + reservation.getId() + " already exists");
+            throw new IllegalArgumentException("Reservation with ID " + reservation.getId() + " already exists");
         }
 
         // Decrement terrain quantity based on the reservation

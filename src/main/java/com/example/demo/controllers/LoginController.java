@@ -30,7 +30,7 @@ public class LoginController {
      *
      * @param mail     The email of the user attempting to log in
      * @param password The password of the user
-     * @return ResponseEntity with HTTP status 200 if login is successful
+     * @return ResponseEntity with HTTP status 200 and the user id if login is successful
      * @throws NotFoundException if the user is not found or if the password is incorrect
      */
     @Operation(summary = "User login", description = "Authenticate a user by email and password.")

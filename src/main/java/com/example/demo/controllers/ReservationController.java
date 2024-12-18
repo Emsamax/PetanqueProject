@@ -87,14 +87,12 @@ public class ReservationController {
     /**
      * Update an existing reservation by user ID and terrain ID.
      *
-     * @param userId the ID of the user making the reservation
-     * @param terrainId the ID of the terrain associated with the reservation
      * @param reservation the updated reservation data
      * @return ResponseEntity with status code 200 if the reservation is updated successfully
      * @throws NotFoundException if the reservation with the given userId and terrainId does not exist
      * @throws IllegalArgumentException if the provided data is invalid
      */
-    @PutMapping("/{userId}/{terrainId}")
+    @PutMapping
     @Operation(summary = "Update an existing reservation", description = "Update a reservation by providing the new data and reservation ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully updated reservation"),
@@ -102,13 +100,7 @@ public class ReservationController {
             @ApiResponse(responseCode = "404", description = "Reservation not found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    public ResponseEntity<Void> updateReservation(@PathVariable Integer userId, @PathVariable Integer terrainId, @RequestBody ReservationDTO reservation) throws NotFoundException, IllegalArgumentException {
-        // Construct the composite key (ReservationId) from the path variables
-        ReservationIdDTO reservationId = new ReservationIdDTO(userId, terrainId);
-
-        // Set the Id
-        reservation.setId(reservationId);
-
+    public ResponseEntity<Void> updateReservation(@RequestBody ReservationDTO reservation) throws NotFoundException, IllegalArgumentException {
         reservationService.updateReservation(reservation);
         return ResponseEntity.ok().build();
     }
