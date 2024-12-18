@@ -38,10 +38,16 @@ public class Reservation {
     @Schema(description = "The number of reserved terrain.")
     private Integer reservation;
 
+    /**
+     * Many-to-one relationships with the user.
+     */
     @ManyToOne
     @MapsId("utilisateurId")
     private Utilisateur utilisateur;
 
+    /**
+     * Many-to-one relationships with the terrain.
+     */
     @ManyToOne
     @MapsId("terrainId")
     private Terrain terrain;

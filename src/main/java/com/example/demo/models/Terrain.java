@@ -71,7 +71,10 @@ public class Terrain {
     @Schema(description = "The geographic point (location) of the petanque ground (maximum 100 characters).")
     private String pointGeo;
 
-    // Relation avec les réservations
+    /**
+     * One-to-many relationship with Reservation. Allow to remove reservations related to the
+     * terrain when deleting it.
+     */
     @OneToMany(mappedBy = "terrain", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations = new ArrayList<>();
 }

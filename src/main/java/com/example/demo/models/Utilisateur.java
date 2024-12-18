@@ -89,7 +89,10 @@ public class Utilisateur {
     @Schema(description = "The username of the user.")
     private String username;
 
-    // Relation avec les réservations
+    /**
+     * One-to-many relationship with Reservation. Allow to remove reservations related to the
+     * user when deleting it.
+     */
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations = new ArrayList<>();
 }
