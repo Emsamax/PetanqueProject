@@ -134,9 +134,11 @@ public class UtilisateurService {
      *
      * @param mail      The user's email
      * @param password  The provided password
-     * @throws NotFoundException if the user is not found or the password is incorrect
+     * @return the user id
+     * @throws NotFoundException if the user is not found
+     * @throws IllegalArgumentException the password is incorrect
      */
-    public void login(String mail, String password) throws NotFoundException {
+    public Integer login(String mail, String password) throws NotFoundException, IllegalArgumentException {
         // Get the user
         Utilisateur utilisateur = utilisateurRepository.findByMail(mail)
                 .orElseThrow(() -> new NotFoundException("User with mail " + mail + " not found"));
@@ -145,6 +147,8 @@ public class UtilisateurService {
         if (!passwordEncoder.matches(password, utilisateur.getPassword())) {
             throw new NotFoundException("Wrong password");
         }
+
+        return utilisateur.getId();
     }
 
     /**

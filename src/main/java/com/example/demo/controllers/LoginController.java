@@ -31,7 +31,8 @@ public class LoginController {
      * @param mail     The email of the user attempting to log in
      * @param password The password of the user
      * @return ResponseEntity with HTTP status 200 and the user id if login is successful
-     * @throws NotFoundException if the user is not found or if the password is incorrect
+     * @throws NotFoundException if the user is not found
+     * @throws IllegalArgumentException if the password is incorrect
      */
     @Operation(summary = "User login", description = "Authenticate a user by email and password.")
     @ApiResponses(value = {
@@ -40,8 +41,7 @@ public class LoginController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping("/{mail}/{password}")
-    public ResponseEntity<Void> login(@PathVariable String mail, @PathVariable String password) throws NotFoundException {
-        utilisateurService.login(mail, password);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Integer> login(@PathVariable String mail, @PathVariable String password) throws NotFoundException, IllegalArgumentException {
+        return ResponseEntity.ok(utilisateurService.login(mail, password));
     }
 }
