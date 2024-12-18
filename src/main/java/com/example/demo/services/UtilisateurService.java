@@ -145,7 +145,7 @@ public class UtilisateurService {
 
         // If the password doesn't correspond, throw exception
         if (!passwordEncoder.matches(password, utilisateur.getPassword())) {
-            throw new NotFoundException("Wrong password");
+            throw new IllegalArgumentException("Invalid password");
         }
 
         return utilisateur.getId();
