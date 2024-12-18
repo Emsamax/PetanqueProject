@@ -37,7 +37,8 @@ public class LoginController {
     @Operation(summary = "User login", description = "Authenticate a user by email and password.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Login successful"),
-            @ApiResponse(responseCode = "404", description = "User not found or incorrect password"),
+            @ApiResponse(responseCode = "40", description = "Incorrect password"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping("/{mail}/{password}")
